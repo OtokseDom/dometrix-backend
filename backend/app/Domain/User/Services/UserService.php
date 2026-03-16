@@ -5,6 +5,7 @@ namespace App\Domain\User\Services;
 use App\Domain\User\Models\User;
 use App\Domain\User\DTOs\CreateUserDTO;
 use App\Domain\User\DTOs\UpdateUserDTO;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -24,7 +25,7 @@ class UserService
         ]);
     }
 
-    public function listAll(string $organization_id)
+    public function listAll(string $organization_id): Collection
     {
         $query = User::query();
         if ($organization_id) $query->where('organization_id', $organization_id);
