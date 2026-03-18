@@ -2,20 +2,20 @@
 
 namespace App\Domain\Organization\Models;
 
+use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Organization extends Model
 {
-    use SoftDeletes, HasFactory;
+    use UsesUuid, SoftDeletes;
 
     protected $table = 'organizations';
     public $incrementing = false; // because we use UUID
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id',
         'name',
         'code',
         'timezone',
@@ -28,7 +28,7 @@ class Organization extends Model
     ];
 
     // Relationships
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany(\App\Domain\User\Models\User::class);
     }
