@@ -2,18 +2,18 @@
 
 namespace App\Domain\Role\Models;
 
+use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Role extends Model
 {
-    use HasFactory, SoftDeletes;
+    use UsesUuid, SoftDeletes;
 
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['id', 'name', 'permissions'];
+    protected $fillable = ['name', 'permissions'];
 
     protected $casts = [
         'permissions' => 'array',
