@@ -11,24 +11,15 @@ return new class extends Migration
         // Users table
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('organization_id')->nullable()->comment('Tenant/Organization scope');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->uuid('role_id')->nullable()->comment('Link to roles table for RBAC');
             $table->boolean('is_active')->default(true);
             $table->jsonb('metadata')->nullable()->comment('Future-proof JSON fields for ERP extensions');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-
-            // Foreign keys
-            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('set null');
-
-            // Indexes
-            $table->index(['organization_id', 'role_id']);
         });
 
         // Password reset tokens table
