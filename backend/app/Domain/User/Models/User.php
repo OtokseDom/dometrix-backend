@@ -16,12 +16,9 @@ class User extends Authenticatable
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id',
-        'organization_id',
         'name',
         'email',
         'password',
-        'role_id',
         'is_active',
         'metadata'
     ];
@@ -37,15 +34,4 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
-    // Relations
-    public function organization()
-    {
-        return $this->belongsTo(\App\Domain\Organization\Models\Organization::class);
-    }
-
-    public function role()
-    {
-        return $this->belongsTo(\App\Domain\Role\Models\Role::class);
-    }
 }
