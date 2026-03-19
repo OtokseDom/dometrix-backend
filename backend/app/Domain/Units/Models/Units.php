@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Domain\UnitOfMeasure\Models;
+namespace App\Domain\Units\Models;
 
 use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UnitOfMeasure extends Model
+class Units extends Model
 {
     use UsesUuid,SoftDeletes;
 

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('unit_of_measures', function (Blueprint $table) {
+        Schema::create('units', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('code')->unique()->comment('Short code like kg, pcs, liter');
             $table->string('name')->comment('Full name like kilogram, piece, liter');
@@ -19,6 +19,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('unit_of_measures');
+        Schema::dropIfExists('units');
     }
 };

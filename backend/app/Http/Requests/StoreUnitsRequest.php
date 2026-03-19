@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUnitOfMeasureRequest extends FormRequest
+class StoreUnitsRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,7 @@ class StoreUnitOfMeasureRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|string|unique:unit_of_measures,code',
+            'code' => 'required|string|unique:units,code',
             'name' => 'required|string',
             'metadata' => 'nullable|array'
         ];

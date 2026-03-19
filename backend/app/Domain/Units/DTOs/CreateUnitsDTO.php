@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\UnitOfMeasure\DTOs;
+namespace App\Domain\Units\DTOs;
 
-class CreateUnitOfMeasureDTO
+class CreateUnitsDTO
 {
     public function __construct(
         public string $code,

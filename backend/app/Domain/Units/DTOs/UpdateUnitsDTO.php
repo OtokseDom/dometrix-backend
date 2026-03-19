@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\UnitOfMeasure\DTOs;
+namespace App\Domain\Units\DTOs;
 
-class UpdateUnitOfMeasureDTO
+class UpdateUnitsDTO
 {
     public function __construct(
         public ?string $code = null,

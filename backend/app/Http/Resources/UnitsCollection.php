@@ -4,13 +4,13 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class UnitOfMeasureCollection extends ResourceCollection
+class UnitsCollection extends ResourceCollection
 {
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'total' => $this->collection->count(),
-            'data' => UnitOfMeasureResource::collection($this->collection),
+            'data' => UnitsResource::collection($this->collection),
         ];
     }
 }
