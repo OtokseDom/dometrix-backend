@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Domain\Organization\Models\Organization;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class OrganizationSeeder extends Seeder
 {
@@ -13,10 +14,12 @@ class OrganizationSeeder extends Seeder
     public function run(): void
     {
         Organization::create([
+            'id' => (string) Str::uuid(),
             'name' => "Default",
             'code' => "default",
             'timezone' => "UTC",
             'currency' => "USD",
+            'metadata' => [],
         ]);
     }
 }
