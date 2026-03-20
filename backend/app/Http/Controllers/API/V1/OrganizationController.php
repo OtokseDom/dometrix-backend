@@ -23,7 +23,7 @@ class OrganizationController extends Controller
 
     public function index()
     {
-        $organizations = $this->service->listOrganizations();
+        $organizations = $this->service->getOrganizations();
         return ApiResponse::send(new OrganizationCollection($organizations), "Organizations retrieved");
     }
 
@@ -44,16 +44,20 @@ class OrganizationController extends Controller
 
     public function show($id)
     {
-        $organization = $this->service->findById($id);
-        if (!$organization) return ApiResponse::send(null, "Organization not found", 404);
+        $organization = $this->service->showOrganization($id);
+        if (!$organization) {
+            return ApiResponse::send(null, "Organization not found", 404);
+        }
 
         return ApiResponse::send(new OrganizationResource($organization), "Organization retrieved");
     }
 
     public function update(UpdateOrganizationRequest $request, $id)
     {
-        $organization = $this->service->findById($id);
-        if (!$organization) return ApiResponse::send(null, "Organization not found", 404);
+        $organization = $this->service->showOrganization($id);
+        if (!$organization) {
+            return ApiResponse::send(null, "Organization not found", 404);
+        }
 
         $dto = new UpdateOrganizationDTO(
             name: $request->name,
@@ -69,8 +73,10 @@ class OrganizationController extends Controller
 
     public function destroy($id)
     {
-        $organization = $this->service->findById($id);
-        if (!$organization) return ApiResponse::send(null, "Organization not found", 404);
+        $organization = $this->service->showOrganization($id);
+        if (!$organization) {
+            return ApiResponse::send(null, "Organization not found", 404);
+        }
 
         $this->service->deleteOrganization($organization);
 

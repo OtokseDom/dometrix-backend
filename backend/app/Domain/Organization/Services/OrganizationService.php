@@ -12,22 +12,23 @@ class OrganizationService
     // ----------------------
     // Organization CRUD
     // ----------------------
+
+    public function getOrganizations(): Collection
+    {
+        return Organization::all();
+    }
+
+    public function showOrganization(string $id): ?Organization
+    {
+        return Organization::find($id);
+    }
+
     public function createOrganization(CreateOrganizationDTO $dto): Organization
     {
         return Organization::create([
             'name' => $dto->name, 'code' => $dto->code, 'timezone' => $dto->timezone, 'currency' => $dto->currency,
             'metadata' => $dto->metadata,
         ]);
-    }
-
-    public function listOrganizations(): Collection
-    {
-        return Organization::all();
-    }
-
-    public function findById(string $id): ?Organization
-    {
-        return Organization::find($id);
     }
 
     public function updateOrganization(Organization $organization, array $data): Organization
