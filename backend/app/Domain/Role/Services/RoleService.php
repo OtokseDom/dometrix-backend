@@ -13,7 +13,6 @@ class RoleService
     public function create(CreateRoleDTO $dto): Role
     {
         return Role::create([
-            'id' => Str::uuid(),
             'name' => $dto->name,
             'permissions' => $dto->permissions
         ]);

@@ -14,12 +14,9 @@ class UserService
     public function create(CreateUserDTO $dto): User
     {
         return User::create([
-            'id' => Str::uuid(),
             'name' => $dto->name,
             'email' => $dto->email,
             'password' => Hash::make($dto->password),
-            'role_id' => $dto->role_id,
-            'organization_id' => $dto->organization_id,
             'metadata' => $dto->metadata,
             'is_active' => $dto->is_active
         ]);
@@ -44,8 +41,6 @@ class UserService
         $data = [
             'name' => $dto->name ?? $user->name,
             'email' => $dto->email ?? $user->email,
-            'role_id' => $dto->role_id ?? $user->role_id,
-            'organization_id' => $dto->organization_id ?? $user->organization_id,
             'metadata' => $dto->metadata ?? $user->metadata,
             'is_active' => $dto->is_active ?? $user->is_active
         ];
