@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\OrganizationController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\RoleController;
+use App\Http\Controllers\API\V1\OrganizationUserController;
 use App\Http\Controllers\API\V1\UnitsController;
 
 Route::prefix('v1')->group(function () {
@@ -21,6 +22,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('organizations', OrganizationController::class);
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
+        Route::apiResource('organization-users', OrganizationUserController::class);
         Route::apiResource('units', UnitsController::class);
     });
 });
