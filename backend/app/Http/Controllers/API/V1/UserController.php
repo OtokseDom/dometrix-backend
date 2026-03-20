@@ -23,7 +23,7 @@ class UserController extends Controller
 
     public function index($organization_id = null)
     {
-        $users = $this->service->listAll($organization_id);
+        $users = $this->service->getUsers($organization_id);
         return ApiResponse::send(new UserCollection($users), "Users retrieved");
     }
 
@@ -45,15 +45,19 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = $this->service->findById($id);
-        if (!$user) return ApiResponse::send(null, "User not found", 404);
+        $user = $this->service->showUser($id);
+        if (!$user) {
+            return ApiResponse::send(null, "User not found", 404);
+        }
         return ApiResponse::send(new UserResource($user), "User retrieved");
     }
 
     public function update(UpdateUserRequest $request, $id)
     {
-        $user = $this->service->findById($id);
-        if (!$user) return ApiResponse::send(null, "User not found", 404);
+        $user = $this->service->showUser($id);
+        if (!$user) {
+            return ApiResponse::send(null, "User not found", 404);
+        }
 
         $dto = new UpdateUserDTO(
             name: $request->name ?? null,
@@ -71,8 +75,10 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = $this->service->findById($id);
-        if (!$user) return ApiResponse::send(null, "User not found", 404);
+        $user = $this->service->showUser($id);
+        if (!$user) {
+            return ApiResponse::send(null, "User not found", 404);
+        }
 
         $this->service->delete($user);
         return ApiResponse::send(null, "User deleted");

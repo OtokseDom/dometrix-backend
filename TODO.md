@@ -17,6 +17,7 @@
 - ✅ Setup org_user controller
 - ✅ Setup org_user route
 - ✅ Seeder for org_user
+- ✅ Refactor User,Role controller and service function names
 - Business factory upon new registration
     - masters, organization
 - Refactor Auth service

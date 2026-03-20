@@ -5,6 +5,7 @@ namespace App\Domain\Role\Services;
 use App\Domain\Role\Models\Role;
 use App\Domain\Role\DTOs\CreateRoleDTO;
 use App\Domain\Role\DTOs\UpdateRoleDTO;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class RoleService
@@ -18,12 +19,12 @@ class RoleService
         ]);
     }
 
-    public function listAll()
+    public function getRoles(): Collection
     {
         return Role::all();
     }
 
-    public function findById(string $id): ?Role
+    public function showRole(string $id): ?Role
     {
         return Role::find($id);
     }

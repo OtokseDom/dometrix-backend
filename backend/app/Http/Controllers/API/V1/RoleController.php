@@ -23,7 +23,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        return ApiResponse::send(new RoleCollection($this->service->listAll()), "Roles retrieved");
+        return ApiResponse::send(new RoleCollection($this->service->getRoles()), "Roles retrieved");
     }
 
     public function store(StoreRoleRequest $request)
@@ -39,15 +39,19 @@ class RoleController extends Controller
 
     public function show($id)
     {
-        $role = $this->service->findById($id);
-        if (!$role) return ApiResponse::send(null, "Role not found", 404);
+        $role = $this->service->showRole($id);
+        if (!$role) {
+            return ApiResponse::send(null, "Role not found", 404);
+        }
         return ApiResponse::send(new RoleResource($role), "Role retrieved");
     }
 
     public function update(UpdateRoleRequest $request, $id)
     {
-        $role = $this->service->findById($id);
-        if (!$role) return ApiResponse::send(null, "Role not found", 404);
+        $role = $this->service->showRole($id);
+        if (!$role) {
+            return ApiResponse::send(null, "Role not found", 404);
+        }
 
         $dto = new UpdateRoleDTO(
             name: $request->name ?? null,
@@ -60,8 +64,10 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
-        $role = $this->service->findById($id);
-        if (!$role) return ApiResponse::send(null, "Role not found", 404);
+        $role = $this->service->showRole($id);
+        if (!$role) {
+            return ApiResponse::send(null, "Role not found", 404);
+        }
 
         $this->service->delete($role);
         return ApiResponse::send(null, "Role deleted");

@@ -25,14 +25,16 @@ class UserService
         ]);
     }
 
-    public function listAll(string $organization_id): Collection
+    public function getUsers(string $organization_id): Collection
     {
         $query = User::query();
-        if ($organization_id) $query->where('organization_id', $organization_id);
+        if ($organization_id) {
+            $query->where('organization_id', $organization_id);
+        }
         return $query->get();
     }
 
-    public function findById(string $id): ?User
+    public function showUser(string $id): ?User
     {
         return User::find($id);
     }
@@ -48,7 +50,9 @@ class UserService
             'is_active' => $dto->is_active ?? $user->is_active
         ];
 
-        if ($dto->password) $data['password'] = Hash::make($dto->password);
+        if ($dto->password) {
+            $data['password'] = Hash::make($dto->password);
+        }
 
         $user->update($data);
 
