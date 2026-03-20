@@ -1,5 +1,32 @@
 # TODO
-- Refactor User table to use pivot table
-- Seeder for organization, roles, and users 
+
+- ✅ Refactor User table to use pivot table
+- ✅ Refactor unit_of_measure to units
+- ✅ Seeder for organization
+- ✅ Seeder for roles
+- ✅ Seeder for users
+- ✅ Setup org_user migration
+- ✅ Fix organization model relationship
+- ✅ Fix user model relationship
+- ✅ Fix role model relationship
+- ✅ Setup org_user model
+- ✅ Setup org_user resource
+- ✅ Setup org_user collection
+- ✅ Setup org_user store & update requests
+- ✅ Setup org service
+- ✅ Setup org_user controller
+- ✅ Setup org_user route
+- ✅ Seeder for org_user
 - Business factory upon new registration
-  - masters, organization
+    - masters, organization
+- Refactor Auth service
+- Refactor Auth DTOs
+- Seeder for Units
+- Migration for currencies
+- Currency model
+- Currency resource
+- Currency requests
+- Currency DTOs
+- Currency service
+- Currency controller
+- Currency route
