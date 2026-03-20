@@ -23,7 +23,7 @@ class UnitsController extends Controller
 
     public function index()
     {
-        return ApiResponse::send(new UnitsCollection($this->service->listAll()), "Unitss retrieved");
+        return ApiResponse::send(new UnitsCollection($this->service->listAll()), "Units retrieved");
     }
 
     public function store(StoreUnitsRequest $request)
