@@ -2,7 +2,10 @@
 
 namespace App\Domain\User\Models;
 
+use App\Domain\Organization\Models\Organization;
+use App\Domain\Organization\Models\OrganizationUser;
 use App\Traits\UsesUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,4 +37,19 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+//    Relationship
+    public function organizations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class, 'organization_user')
+            ->using(OrganizationUser::class)
+            ->withPivot('role_id')
+            ->withTimestamps();
+    }
+
+//    public function getRoleInOrganization(string $organizationId): ?int
+//    {
+//        $pivot = $this->organizations()->where('organization_id', $organizationId)->first()?->pivot;
+//        return $pivot?->role_id;
+//    }
 }
