@@ -8,9 +8,8 @@ class UpdateUserDTO
         public ?string $name = null,
         public ?string $email = null,
         public ?string $password = null,
-        public ?string $role_id = null,
-        public ?string $organization_id = null,
         public ?array $metadata = null,
         public ?bool $is_active = null
-    ) {}
+    ) {
+    }
 }

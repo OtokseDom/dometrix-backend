@@ -33,8 +33,6 @@ class UserController extends Controller
             name: $request->name,
             email: $request->email,
             password: $request->password,
-            role_id: $request->role_id,
-            organization_id: $request->organization_id,
             metadata: $request->metadata ?? null,
             is_active: $request->is_active ?? true
         );
@@ -63,8 +61,6 @@ class UserController extends Controller
             name: $request->name ?? null,
             email: $request->email ?? null,
             password: $request->password ?? null,
-            role_id: $request->role_id ?? null,
-            organization_id: $request->organization_id ?? null,
             metadata: $request->metadata ?? null,
             is_active: $request->is_active ?? null
         );
