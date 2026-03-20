@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrganizationResource extends JsonResource
 {
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
@@ -15,8 +15,11 @@ class OrganizationResource extends JsonResource
             'timezone' => $this->timezone,
             'currency' => $this->currency,
             'metadata' => $this->metadata,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'users' => UserResource::collection(
+                $this->whenLoaded('users')
+            ),
+            'created_at' => $this->created_at?->toIso8601String(),
+            'updated_at' => $this->updated_at?->toIso8601String(),
         ];
     }
 }
