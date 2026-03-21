@@ -13,8 +13,8 @@ class Organization extends Model
 {
     use UsesUuid, SoftDeletes;
 
-    protected $table = 'organizations';
-    public $incrementing = false; // because we use UUID
+    public $incrementing = false;
+    protected $table = 'organizations'; // because we use UUID
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -33,7 +33,12 @@ class Organization extends Model
     // Users belonging to this organization via pivot
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'organization_user')
+        return $this->belongsToMany(
+            User::class,
+            'organization_user',
+            'organization_id', // FK on pivot
+            'user_id'          // related key
+        )
             ->using(OrganizationUser::class)
             ->withPivot('role_id')
             ->withTimestamps();
