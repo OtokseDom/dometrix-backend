@@ -21,7 +21,7 @@ class UserController extends Controller
         $this->service = $service;
     }
 
-    public function index($organization_id = null)
+    public function index($organization_id = "")
     {
         $users = $this->service->getUsers($organization_id);
         return ApiResponse::send(new UserCollection($users), "Users retrieved");
