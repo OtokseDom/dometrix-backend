@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class OrganizationUser extends Pivot
 {
     public $timestamps = true;
+    public $incrementing = false;
     protected $table = 'organization_user';
     protected $fillable = [
         'organization_id',
@@ -18,16 +19,7 @@ class OrganizationUser extends Pivot
     ];
 
 
-//    Relationships
-    public function organization(): BelongsTo
-    {
-        return $this->belongsTo(Organization::class);
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+    //    Relationships
 
     public function role(): BelongsTo
     {
