@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         // Organization_User table
@@ -14,7 +13,6 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->uuid('role_id');
             $table->timestamps();
-            $table->softDeletes();
 
             // Foreign key constraints
             $table->foreign('organization_id')
@@ -27,8 +25,7 @@ return new class extends Migration
                 ->references('id')->on('roles')
                 ->onDelete('cascade')->onUpdate('cascade');
 
-            // Composite primary key (prevents duplicates)
-            $table->primary(['organization_id', 'user_id', 'role_id']);
+            $table->unique(['organization_id', 'user_id']);
         });
     }
 
