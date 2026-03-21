@@ -6,6 +6,7 @@ use App\Domain\Organization\Models\Organization;
 use App\Domain\Organization\Models\OrganizationUser;
 use App\Domain\Organization\DTOs\CreateOrganizationDTO;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class OrganizationService
 {
@@ -79,18 +80,28 @@ class OrganizationService
     /**
      * List all users in an organization with pivot info
      */
-    public function listUsers(Organization $organization): Collection
+    public function listUsers(?Organization $organization = null): Collection
     {
-        return $organization->users()->with('role')->get();
-    }
+        $user = Auth::user();
 
-    /**
-     * Get a user's role in an organization
-     */
-    public function getUserRole(Organization $organization, string $userId): ?string
-    {
-        $pivot = $organization->users()->where('user_id', $userId)->first()?->pivot;
+        // Default to first organization if not provided
+        if (!$organization) {
+            $organization = $user->organizations()->first();
+        }
 
-        return $pivot?->role_id;
+        if (!$organization) {
+            return collect(); // return empty collection if no org found
+        }
+
+        $users = $organization->users()->get();
+
+        // Load pivot role for each user
+        $users->each(function ($user) {
+            if ($user->pivot) {
+                $user->pivot->load('role');
+            }
+        });
+
+        return $users;
     }
 }

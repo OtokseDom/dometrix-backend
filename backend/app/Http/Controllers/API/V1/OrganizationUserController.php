@@ -19,9 +19,10 @@ class OrganizationUserController extends Controller
     /**
      * List all users in an organization
      */
-    public function index(Organization $organization)
+    public function index()
     {
-        $users = $this->service->listUsers($organization);
+        $users = $this->service->listUsers();
+
         return ApiResponse::send(
             OrganizationUserResource::collection($users),
             'Organization users retrieved successfully'
