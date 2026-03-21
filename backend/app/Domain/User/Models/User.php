@@ -38,18 +38,17 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-//    Relationship
+    //    Relationship
     public function organizations(): BelongsToMany
     {
-        return $this->belongsToMany(Organization::class, 'organization_user')
+        return $this->belongsToMany(
+            Organization::class,
+            'organization_user',
+            'user_id',
+            'organization_id'
+        )
             ->using(OrganizationUser::class)
             ->withPivot('role_id')
             ->withTimestamps();
     }
-
-//    public function getRoleInOrganization(string $organizationId): ?int
-//    {
-//        $pivot = $this->organizations()->where('organization_id', $organizationId)->first()?->pivot;
-//        return $pivot?->role_id;
-//    }
 }
