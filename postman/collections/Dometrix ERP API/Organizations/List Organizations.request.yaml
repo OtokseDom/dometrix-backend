@@ -1,0 +1,5 @@
+$kind: http-request
+name: List Organizations
+method: GET
+url: '{{base_url}}/api/v1/organizations'
+order: 1000

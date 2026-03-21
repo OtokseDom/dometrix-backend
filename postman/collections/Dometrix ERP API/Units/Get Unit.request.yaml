@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Unit
+method: GET
+url: '{{base_url}}/api/v1/units/{{unit_id}}'
+order: 3000

@@ -1,0 +1,18 @@
+$kind: http-request
+name: Create Organization
+method: POST
+url: '{{base_url}}/api/v1/organizations'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Acme Corp",
+      "code": "ACME",
+      "timezone": "UTC",
+      "currency": "USD",
+      "metadata": {}
+    }

@@ -1,0 +1,15 @@
+$kind: http-request
+name: Create Role
+method: POST
+url: '{{base_url}}/api/v1/roles'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Manager",
+      "permissions": ["read", "write"]
+    }

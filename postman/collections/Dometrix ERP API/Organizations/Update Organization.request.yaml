@@ -1,0 +1,18 @@
+$kind: http-request
+name: Update Organization
+method: PUT
+url: '{{base_url}}/api/v1/organizations/{{organization_id}}'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Acme Corporation",
+      "code": "ACME",
+      "timezone": "America/New_York",
+      "currency": "USD",
+      "metadata": {}
+    }

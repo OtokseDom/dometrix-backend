@@ -1,0 +1,15 @@
+$kind: http-request
+name: Update Role
+method: PUT
+url: '{{base_url}}/api/v1/roles/{{role_id}}'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Senior Manager",
+      "permissions": ["read", "write", "delete"]
+    }

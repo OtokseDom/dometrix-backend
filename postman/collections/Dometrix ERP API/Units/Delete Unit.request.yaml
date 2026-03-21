@@ -1,0 +1,5 @@
+$kind: http-request
+name: Delete Unit
+method: DELETE
+url: '{{base_url}}/api/v1/units/{{unit_id}}'
+order: 5000

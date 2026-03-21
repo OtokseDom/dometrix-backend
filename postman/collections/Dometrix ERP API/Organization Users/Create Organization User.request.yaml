@@ -1,0 +1,16 @@
+$kind: http-request
+name: Create Organization User
+method: POST
+url: '{{base_url}}/api/v1/organization-users'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "organization_id": "{{organization_id}}",
+      "user_id": "{{user_id}}",
+      "role_id": "{{role_id}}"
+    }
