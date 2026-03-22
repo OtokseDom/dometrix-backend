@@ -17,8 +17,9 @@ class RegisterRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
-            'role_id' => 'nullable|uuid|exists:roles,id',
-            'organization_id' => 'nullable|uuid|exists:organizations,id'
+            'organization_name' => 'nullable|string|max:55|required_without:organization_code',
+            'organization_code' => 'nullable|string|required_without:organization_name',
+            'role_id' => 'uuid|exists:roles,id',
         ];
     }
 }

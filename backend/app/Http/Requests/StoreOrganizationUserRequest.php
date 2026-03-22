@@ -16,7 +16,8 @@ class StoreOrganizationUserRequest extends FormRequest
         return [
             'organization_id' => ['required', 'uuid', 'exists:organizations,id'],
             'user_id' => ['required', 'uuid', 'exists:users,id'],
-            'role_id' => ['required', 'uuid', 'exists:roles,id'],
+            'role_id' => ['nullable', 'uuid', 'exists:roles,id'],
+            'status' => ['required', 'string'],
         ];
     }
 }

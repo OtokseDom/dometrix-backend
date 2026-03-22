@@ -8,7 +8,9 @@ class RegisterDTO
         public string $name,
         public string $email,
         public string $password,
+        public ?string $organization_name = null,
+        public ?string $organization_code = null,
         public ?string $role_id = null,
-        public ?string $organization_id = null
-    ) {}
+    ) {
+    }
 }
