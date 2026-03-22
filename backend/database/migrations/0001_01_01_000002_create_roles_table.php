@@ -9,10 +9,18 @@ return new class extends Migration {
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name')->unique()->comment('Role name like Admin, Viewer, System');
+            $table->uuid('organization_id');
+            $table->string('name')->comment('Role name like Admin, Viewer, System');
             $table->jsonb('permissions')->nullable()->comment('JSON permissions per module');
             $table->timestamps();
             $table->softDeletes();
+
+            // Foreign key constraints
+            $table->foreign('organization_id')
+                ->references('id')->on('organizations')
+                ->onDelete('cascade')->onUpdate('cascade');
+            // Composite unique for organization_id + name
+            $table->unique(['organization_id', 'name']);
         });
     }
 
