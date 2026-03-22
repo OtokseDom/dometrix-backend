@@ -15,6 +15,7 @@ class UpdateOrganizationUserRequest extends FormRequest
     {
         return [
             'role_id' => ['required', 'uuid', 'exists:roles,id'],
+            'status' => ['required', 'string'],
         ];
     }
 }

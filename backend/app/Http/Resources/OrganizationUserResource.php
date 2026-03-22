@@ -10,26 +10,30 @@ class OrganizationUserResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'organization_id' => $this->pivot?->organization_id,
-            'user_id' => $this->pivot?->user_id,
-            'role_id' => $this->pivot?->role_id,
             'organization' => $this->whenLoaded('organization', fn() => [
-                'name' => $this->pivot?->name,
-                'code' => $this->pivot?->code,
-                'timezone' => $this->pivot?->timezone,
-                'currency' => $this->pivot?->currency,
-                'metadata' => $this->pivot?->metadata,
+                'id' => $this->organization->id,
+                'name' => $this->organization->name,
+                'code' => $this->organization->code,
+                'timezone' => $this->organization->timezone,
+                'currency' => $this->organization->currency,
+                'metadata' => $this->organization->metadata,
             ]),
-            'user' => [
-                'name' => $this->name,
-                'email' => $this->email,
-                'email_verified_at' => $this->email_verified_at,
-                'is_active' => $this->is_active,
-                'metadata' => $this->metadata,
-            ],
-            'role' => $this->pivot?->role?->only(['name', 'permissions']), // ensure pivot->role is loaded manually
-            'created_at' => $this->pivot?->created_at?->toIso8601String(),
-            'updated_at' => $this->pivot?->updated_at?->toIso8601String(),
+            'user' => $this->whenLoaded('user', fn() => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'email_verified_at' => $this->user->email_verified_at,
+                'is_active' => $this->user->is_active,
+                'metadata' => $this->user->metadata,
+            ]),
+            'role' => $this->whenLoaded('role', fn() => [
+                'id' => $this->role->id,
+                'name' => $this->role->name,
+                'permissions' => $this->role->permissions,
+            ]),
+            'status' => $this->status,
+            'created_at' => $this->created_at?->toIso8601String(),
+            'updated_at' => $this->updated_at?->toIso8601String(),
         ];
     }
 }

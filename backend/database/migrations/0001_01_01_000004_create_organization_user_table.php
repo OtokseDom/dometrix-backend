@@ -11,7 +11,8 @@ return new class extends Migration {
         Schema::create('organization_user', function (Blueprint $table) {
             $table->uuid('organization_id');
             $table->uuid('user_id');
-            $table->uuid('role_id');
+            $table->uuid('role_id')->nullable();
+            $table->string('status');
             $table->timestamps();
 
             // Foreign key constraints

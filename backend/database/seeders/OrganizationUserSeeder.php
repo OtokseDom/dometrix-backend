@@ -28,17 +28,19 @@ class OrganizationUserSeeder extends Seeder
 
         // Define assignments
         $assignments = [
-            'Superadmin User' => 'Superadmin',
-            'Admin User' => 'Admin',
-            'Employee User' => 'Employee',
+            'superadmin@demo.com' => 'Superadmin',
+            'admin@demo.com' => 'Admin',
+            'employee@demo.com' => 'Employee',
         ];
 
-        foreach ($assignments as $userName => $roleName) {
-            $user = $users->get($userName);
+        $users = User::all()->keyBy('email');
+
+        foreach ($assignments as $userEmail => $roleName) {
+            $user = $users->get($userEmail);
             $role = $roles->get($roleName);
 
             if (!$user || !$role) {
-                $this->command->warn("Skipping assignment for {$userName} / {$roleName}");
+                $this->command->warn("Skipping assignment for {$userEmail} / {$roleName}");
                 continue;
             }
 
@@ -53,12 +55,11 @@ class OrganizationUserSeeder extends Seeder
                     'organization_id' => $organization->id,
                     'user_id' => $user->id,
                     'role_id' => $role->id,
+                    'status' => 'active',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
             }
         }
-
-        $this->command->info('OrganizationUser pivot table seeded successfully.');
     }
 }
