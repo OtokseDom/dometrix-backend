@@ -39,8 +39,7 @@ class Organization extends Model
             'organization_id', // FK on pivot
             'user_id'          // related key
         )
-            ->using(OrganizationUser::class)
-            ->withPivot('role_id')
+            ->withPivot('role_id', 'status')
             ->withTimestamps();
     }
 

@@ -47,8 +47,7 @@ class User extends Authenticatable
             'user_id',
             'organization_id'
         )
-            ->using(OrganizationUser::class)
-            ->withPivot('role_id')
+            ->withPivot('role_id', 'status')
             ->withTimestamps();
     }
 }
