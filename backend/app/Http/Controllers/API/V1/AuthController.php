@@ -11,6 +11,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\PasswordResetRequest;
 use App\Helpers\ApiResponse;
+use App\Http\Resources\OrganizationUserResource;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -28,12 +29,18 @@ class AuthController extends Controller
             name: $request->name,
             email: $request->email,
             password: $request->password,
-            role_id: $request->role_id,
-            organization_id: $request->organization_id
+            organization_name: $request->organization_name,
+            organization_code: $request->organization_code,
+            role_id: $request->role_id
         );
 
-        $user = $this->service->register($dto);
-        return ApiResponse::send($user, "User registered successfully", 201);
+        try {
+            $organizationUser = $this->service->register($dto);
+            return ApiResponse::send(new OrganizationUserResource($organizationUser), "User registered successfully",
+                201);
+        } catch (\Exception $e) {
+            return ApiResponse::send(null, $e->getMessage(), 500);
+        }
     }
 
     public function login(LoginRequest $request)
@@ -41,7 +48,9 @@ class AuthController extends Controller
         $dto = new LoginDTO($request->email, $request->password);
         $token = $this->service->login($dto);
 
-        if (!$token) return ApiResponse::send(null, "Invalid credentials", 401);
+        if (!$token) {
+            return ApiResponse::send(null, "Invalid credentials", 401);
+        }
 
         return ApiResponse::send(['token' => $token], "Login successful");
     }
@@ -63,7 +72,9 @@ class AuthController extends Controller
         );
 
         $success = $this->service->resetPassword($dto);
-        if (!$success) return ApiResponse::send(null, "Invalid token or email", 400);
+        if (!$success) {
+            return ApiResponse::send(null, "Invalid token or email", 500);
+        }
 
         return ApiResponse::send(null, "Password reset successful");
     }
