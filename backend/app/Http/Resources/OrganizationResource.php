@@ -15,9 +15,6 @@ class OrganizationResource extends JsonResource
             'timezone' => $this->timezone,
             'currency' => $this->currency,
             'metadata' => $this->metadata,
-            'users' => UserResource::collection(
-                $this->whenLoaded('users')
-            ),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];
