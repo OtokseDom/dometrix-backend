@@ -48,23 +48,58 @@ class OrganizationService
     // ----------------------
 
     /**
+     * List all users in an organization with pivot info
+     */
+    public function listUsers(?Organization $organization = null): Collection
+    {
+        $authUser = Auth::user();
+
+        if (!$organization) {
+            $organization = $authUser->organizations()->first();
+        }
+
+        if (!$organization) {
+            return collect();
+        }
+
+        return OrganizationUser::with(['user', 'role'])
+            ->where('organization_id', $organization->id)
+            ->get();
+    }
+
+    /**
      * Attach a user to an organization with a role
      */
-    public function addUser(Organization $organization, string $userId, string $roleId): OrganizationUser
-    {
-        $organization->users()->attach($userId, ['role_id' => $roleId]);
-
-        return OrganizationUser::where('organization_id', $organization->id)
-            ->where('user_id', $userId)->firstOrFail();
+    public function addUser(
+        Organization $organization,
+        string $userId,
+        string $roleId,
+        string $status
+    ): OrganizationUser {
+        OrganizationUser::create([
+            'organization_id' => $organization->id,
+            'user_id' => $userId,
+            'role_id' => $roleId,
+            'status' => $status,
+        ]);
+        return OrganizationUser::with(['organization', 'user', 'role'])
+            ->where('organization_id', $organization->id)
+            ->where('user_id', $userId)
+            ->firstOrFail();
     }
 
     /**
      * Update a user's role in an organization
      */
-    public function updateUserRole(Organization $organization, string $userId, string $roleId): OrganizationUser
-    {
-        $organization->users()->updateExistingPivot($userId, ['role_id' => $roleId]);
-
+    public function updateOrganizationUser(
+        Organization $organization,
+        string $userId,
+        string $roleId,
+        string $status
+    ): OrganizationUser {
+        OrganizationUser::where('organization_id', $organization->id)
+            ->where('user_id', $userId)
+            ->update(['role_id' => $roleId, 'status' => $status]);
         return OrganizationUser::where('organization_id', $organization->id)
             ->where('user_id', $userId)->firstOrFail();
     }
@@ -74,34 +109,9 @@ class OrganizationService
      */
     public function removeUser(Organization $organization, string $userId): void
     {
-        $organization->users()->detach($userId);
+        OrganizationUser::where('organization_id', $organization->id)
+            ->where('user_id', $userId)
+            ->delete();
     }
 
-    /**
-     * List all users in an organization with pivot info
-     */
-    public function listUsers(?Organization $organization = null): Collection
-    {
-        $user = Auth::user();
-
-        // Default to first organization if not provided
-        if (!$organization) {
-            $organization = $user->organizations()->first();
-        }
-
-        if (!$organization) {
-            return collect(); // return empty collection if no org found
-        }
-
-        $users = $organization->users()->get();
-
-        // Load pivot role for each user
-        $users->each(function ($user) {
-            if ($user->pivot) {
-                $user->pivot->load('role');
-            }
-        });
-
-        return $users;
-    }
 }

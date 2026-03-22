@@ -21,12 +21,16 @@ class OrganizationUserController extends Controller
      */
     public function index()
     {
-        $users = $this->service->listUsers();
+        try {
+            $users = $this->service->listUsers();
 
-        return ApiResponse::send(
-            OrganizationUserResource::collection($users),
-            'Organization users retrieved successfully'
-        );
+            return ApiResponse::send(
+                OrganizationUserResource::collection($users),
+                'Organization users retrieved successfully'
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::send(null, $e->getMessage(), 500);
+        }
     }
 
     /**
@@ -34,16 +38,21 @@ class OrganizationUserController extends Controller
      */
     public function store(StoreOrganizationUserRequest $request, Organization $organization)
     {
-        $orgUser = $this->service->addUser(
-            $organization,
-            $request->user_id,
-            $request->role_id
-        );
+        try {
+            $orgUser = $this->service->addUser(
+                $organization,
+                $request->user_id,
+                $request->role_id,
+                $request->status
+            );
 
-        return ApiResponse::send(
-            new OrganizationUserResource($orgUser),
-            'User added to organization successfully'
-        );
+            return ApiResponse::send(
+                new OrganizationUserResource($orgUser),
+                'User added to organization successfully'
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::send(null, $e->getMessage(), 500);
+        }
     }
 
     /**
@@ -51,16 +60,21 @@ class OrganizationUserController extends Controller
      */
     public function update(UpdateOrganizationUserRequest $request, Organization $organization, string $user)
     {
-        $orgUser = $this->service->updateUserRole(
-            $organization,
-            $user,
-            $request->role_id
-        );
+        try {
+            $orgUser = $this->service->updateOrganizationUser(
+                $organization,
+                $user,
+                $request->role_id,
+                $request->status
+            );
 
-        return ApiResponse::send(
-            new OrganizationUserResource($orgUser),
-            'User role updated successfully'
-        );
+            return ApiResponse::send(
+                new OrganizationUserResource($orgUser),
+                'User role updated successfully'
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::send(null, $e->getMessage(), 500);
+        }
     }
 
     /**
@@ -68,11 +82,15 @@ class OrganizationUserController extends Controller
      */
     public function destroy(Organization $organization, string $user)
     {
-        $this->service->removeUser($organization, $user);
+        try {
+            $this->service->removeUser($organization, $user);
 
-        return ApiResponse::send(
-            null,
-            'User removed from organization successfully'
-        );
+            return ApiResponse::send(
+                null,
+                'User removed from organization successfully'
+            );
+        } catch (\Exception $e) {
+            return ApiResponse::send(null, $e->getMessage(), 500);
+        }
     }
 }
