@@ -18,8 +18,8 @@
 - ✅ Setup org_user route
 - ✅ Seeder for org_user
 - ✅ Refactor User,Role controller and service function names
-- Refactor Auth service
-- Refactor Auth DTOs
+- ✅ Refactor Auth service
+- ✅ Refactor Auth DTOs
 - Refactor API response structure
 - Business factory upon new registration
     - masters, organization
