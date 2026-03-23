@@ -19,7 +19,7 @@ class RegisterRequest extends FormRequest
             'password' => 'required|string|min:6|confirmed',
             'organization_name' => 'nullable|string|max:55|required_without:organization_code',
             'organization_code' => 'nullable|string|required_without:organization_name',
-            'role_id' => 'uuid|exists:roles,id',
+            'role_id' => 'nullable|uuid|exists:roles,id',
         ];
     }
 }

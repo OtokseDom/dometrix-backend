@@ -73,7 +73,7 @@ class OrganizationService
     public function addUser(
         Organization $organization,
         string $userId,
-        string $roleId,
+        ?string $roleId,
         string $status
     ): OrganizationUser {
         OrganizationUser::create([
