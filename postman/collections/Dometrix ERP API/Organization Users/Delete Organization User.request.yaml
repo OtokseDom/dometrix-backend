@@ -3,3 +3,5 @@ name: Delete Organization User
 method: DELETE
 url: '{{base_url}}/api/v1/organization-users/{{organization_user_id}}'
 order: 5000
+headers:
+  Accept: application/json

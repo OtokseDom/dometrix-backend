@@ -3,3 +3,5 @@ name: List Organization Users
 method: GET
 url: "{{base_url}}/api/v1/organization-users"
 order: 1000
+headers:
+  Accept: application/json

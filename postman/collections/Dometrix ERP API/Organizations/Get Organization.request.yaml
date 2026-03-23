@@ -3,3 +3,5 @@ name: Get Organization
 method: GET
 url: '{{base_url}}/api/v1/organizations/{{organization_id}}'
 order: 3000
+headers:
+  Accept: application/json

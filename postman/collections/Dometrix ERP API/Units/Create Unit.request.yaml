@@ -4,8 +4,8 @@ method: POST
 url: '{{base_url}}/api/v1/units'
 order: 2000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
+  Accept: application/json
 body:
   type: json
   content: |-

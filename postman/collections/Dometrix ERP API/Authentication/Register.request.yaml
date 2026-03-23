@@ -5,15 +5,16 @@ url: "{{base_url}}/api/v1/auth/register"
 order: 1000
 headers:
   Content-Type: application/json
+  Accept: application/json
 body:
   type: json
   content: |-
     {
-      "name": "John Doe",
-      "email": "john@example.com",
-      "password": "password123",
-      "password_confirmation": "password123",
+      "name": "Albert2",
+      "email": "albert2@example.com",
+      "password": "admin123",
+      "password_confirmation": "admin123",
       "role_id": null,
-      "organization_name": "",
-      "organization_code": "default"
+      "organization_name": "Acme Corp",
+      "organization_code": ""
     }

@@ -3,3 +3,5 @@ name: List Units
 method: GET
 url: '{{base_url}}/api/v1/units'
 order: 1000
+headers:
+  Accept: application/json

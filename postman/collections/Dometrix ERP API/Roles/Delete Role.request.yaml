@@ -3,3 +3,5 @@ name: Delete Role
 method: DELETE
 url: '{{base_url}}/api/v1/roles/{{role_id}}'
 order: 5000
+headers:
+  Accept: application/json
