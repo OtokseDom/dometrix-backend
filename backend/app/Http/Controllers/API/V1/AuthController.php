@@ -34,13 +34,9 @@ class AuthController extends Controller
             role_id: $request->role_id
         );
 
-        try {
-            $organizationUser = $this->service->register($dto);
-            return ApiResponse::send(new OrganizationUserResource($organizationUser), "User registered successfully",
-                201);
-        } catch (\Exception $e) {
-            return ApiResponse::send(null, $e->getMessage(), 500);
-        }
+        $organizationUser = $this->service->register($dto);
+        return ApiResponse::send(new OrganizationUserResource($organizationUser), "User registered successfully",
+            201);
     }
 
     public function login(LoginRequest $request)
