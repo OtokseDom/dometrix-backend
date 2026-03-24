@@ -4,22 +4,19 @@ namespace App\Helpers;
 
 class ApiResponse
 {
-    /**
-     * Standardized API response
-     *
-     * @param mixed $data
-     * @param string|null $message
-     * @param int $status
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public static function send($data = null, ?string $message = null, int $status = 200)
-    {
+    public static function send(
+        mixed $data = null,
+        ?string $message = null,
+        bool $success = true,
+        int $code = 200,
+        ?array $errors = null
+    ) {
         $response = [
-            'status' => $status < 300 ? 'success' : 'error',
-            'message' => $message ?? ($status < 300 ? 'Request successful' : 'Request failed'),
+            'success' => $success,
+            'message' => $message ?? ($success ? 'Request successful' : 'Request failed'),
             'data' => $data,
+            'errors' => $errors ?? (object) []
         ];
-
-        return response()->json($response, $status);
+        return response()->json($response, $code);
     }
 }
