@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserCollection;
 use App\Helpers\ApiResponse;
+use Exception;
 
 class UserController extends Controller
 {
@@ -23,22 +24,46 @@ class UserController extends Controller
 
     public function index($organization_id = "")
     {
-        $users = $this->service->getUsers($organization_id);
-        return ApiResponse::send(new UserCollection($users), "Users retrieved");
+        try {
+            $users = $this->service->getUsers($organization_id);
+            return ApiResponse::send(data: new UserCollection($users), message: "Users retrieved");
+        } catch (Exception $e) {
+            return ApiResponse::send(
+                data: null,
+                message: "Something went wrong",
+                success: false,
+                code: 500,
+                errors: [
+                    "exception" => [$e->getMessage()]
+                ]
+            );
+        }
     }
 
     public function store(StoreUserRequest $request)
     {
-        $dto = new CreateUserDTO(
-            name: $request->name,
-            email: $request->email,
-            password: $request->password,
-            metadata: $request->metadata ?? null,
-            is_active: $request->is_active ?? true
-        );
+        try {
+            $dto = new CreateUserDTO(
+                name: $request->name,
+                email: $request->email,
+                password: $request->password,
+                metadata: $request->metadata ?? null,
+                is_active: $request->is_active ?? true
+            );
 
-        $user = $this->service->create($dto);
-        return ApiResponse::send(new UserResource($user), "User created", 201);
+            $user = $this->service->create($dto);
+            return ApiResponse::send(data: new UserResource($user), message: "User created", success: true, code: 201);
+        } catch (Exception $e) {
+            return ApiResponse::send(
+                data: null,
+                message: "Something went wrong",
+                success: false,
+                code: 500,
+                errors: [
+                    $e->getMessage()
+                ]
+            );
+        }
     }
 
     public function show($id)
