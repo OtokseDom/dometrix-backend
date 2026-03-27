@@ -8,9 +8,6 @@ class OrganizationUserCollection extends ResourceCollection
 {
     public function toArray($request): array
     {
-        return [
-            'total' => $this->collection->count(),
-            'data' => OrganizationUserResource::collection($this->collection),
-        ];
+        return parent::toArray($request);
     }
 }

@@ -6,11 +6,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class RoleCollection extends ResourceCollection
 {
-    public function toArray($request)
+    public function toArray($request): array
     {
-        return [
-            'total' => $this->collection->count(),
-            'data' => RoleResource::collection($this->collection),
-        ];
+        return parent::toArray($request);
     }
 }

@@ -22,10 +22,25 @@ class UserController extends Controller
         $this->service = $service;
     }
 
-    public function index($organization_id = "")
+    public function index()
     {
-        $users = $this->service->getUsers($organization_id);
-        return ApiResponse::send(data: new UserCollection($users), message: "Users retrieved");
+        //        $users = $this->service->getUsers();
+        //        return ApiResponse::send([
+        //            'users' => UserResource::collection($users->items()),
+        //            'meta' => [
+        //                'current_page' => $users->currentPage(),
+        //                'last_page' => $users->lastPage(),
+        //                'per_page' => $users->perPage(),
+        //                'total' => $users->total(),
+        //            ]
+        //        ], "Users retrieved");
+
+        $users = $this->service->getUsers(); // returns LengthAwarePaginator
+
+        return ApiResponse::send(
+            new UserCollection($users),
+            "Users retrieved"
+        );
     }
 
     public function store(StoreUserRequest $request)
@@ -46,18 +61,14 @@ class UserController extends Controller
     public function show($id)
     {
         $user = $this->service->showUser($id);
-        if (!$user) {
-            return ApiResponse::send(null, "User not found", false, 404);
-        }
+        $this->service->findOrFail($id);
         return ApiResponse::send(new UserResource($user), "User retrieved");
     }
 
     public function update(UpdateUserRequest $request, $id)
     {
         $user = $this->service->showUser($id);
-        if (!$user) {
-            return ApiResponse::send(null, "User not found", false, 404);
-        }
+        $this->service->findOrFail($id);
 
         $dto = new UpdateUserDTO(
             name: $request->name ?? null,
@@ -74,10 +85,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = $this->service->showUser($id);
-        if (!$user) {
-            return ApiResponse::send(null, "User not found", false, 404);
-        }
-
+        $this->service->findOrFail($id);
         $this->service->delete($user);
         return ApiResponse::send(null, "User deleted");
     }

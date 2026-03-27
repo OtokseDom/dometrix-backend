@@ -8,9 +8,6 @@ class UnitsCollection extends ResourceCollection
 {
     public function toArray($request): array
     {
-        return [
-            'total' => $this->collection->count(),
-            'data' => UnitsResource::collection($this->collection),
-        ];
+        return parent::toArray($request);
     }
 }

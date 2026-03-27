@@ -2,10 +2,14 @@
 
 namespace App\Domain\User\Services;
 
+use App\Domain\Organization\Models\Organization;
 use App\Domain\User\Models\User;
 use App\Domain\User\DTOs\CreateUserDTO;
 use App\Domain\User\DTOs\UpdateUserDTO;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -22,13 +26,28 @@ class UserService
         ]);
     }
 
-    public function getUsers(string $organization_id): Collection
+
+    public function getUsers(int $perPage = 2): LengthAwarePaginator
     {
-        $query = User::query();
-        if ($organization_id) {
-            $query->where('organization_id', $organization_id);
+        $authUser = Auth::user();
+        // Get all org IDs the auth user belongs to
+        $orgIds = $authUser->organizations()->pluck('organizations.id');
+
+        // Query users belonging to those organizations
+        return User::whereIn('id', function ($query) use ($orgIds) {
+            $query->select('user_id')
+                ->from('organization_user')
+                ->whereIn('organization_id', $orgIds);
+        })->paginate($perPage);
+    }
+
+    public function findOrFail(string $id): User
+    {
+        $user = $this->showUser($id);
+        if (!$user) {
+            throw new ModelNotFoundException("User not found");
         }
-        return $query->get();
+        return $user;
     }
 
     public function showUser(string $id): ?User

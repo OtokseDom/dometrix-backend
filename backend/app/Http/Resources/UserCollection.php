@@ -6,11 +6,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserCollection extends ResourceCollection
 {
-    public function toArray($request)
+    public function toArray($request): array
     {
-        return [
-            'total' => $this->collection->count(),
-            'data' => UserResource::collection($this->collection),
-        ];
+        return parent::toArray($request);
     }
 }
