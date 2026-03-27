@@ -14,9 +14,11 @@ class ApiResponse
         $response = [
             'success' => $success,
             'message' => $message ?? ($success ? 'Request successful' : 'Request failed'),
-            'data' => $data,
-            'errors' => $errors ?? (object) []
+            'data' => $data
         ];
+
+        $response['errors'] = $errors ?? (object) [];
+
         return response()->json($response, $code);
     }
 }
