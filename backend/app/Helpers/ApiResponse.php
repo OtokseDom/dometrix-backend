@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Http\Resources\Json\JsonResource;
+
 class ApiResponse
 {
     public static function send(
@@ -11,13 +13,19 @@ class ApiResponse
         int $code = 200,
         ?array $errors = null
     ) {
+        // 🔥 KEY FIX: resolve resource properly
+        if ($data instanceof JsonResource) {
+            $data = $data->response()->getData(true);
+        }
         $response = [
             'success' => $success,
             'message' => $message ?? ($success ? 'Request successful' : 'Request failed'),
             'data' => $data
         ];
 
-        $response['errors'] = $errors ?? (object) [];
+        if (!empty($errors)) {
+            $response['errors'] = $errors;
+        }
 
         return response()->json($response, $code);
     }
