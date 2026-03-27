@@ -35,13 +35,15 @@ class UnitsController extends Controller
         );
 
         $uom = $this->service->create($dto);
-        return ApiResponse::send(new UnitsResource($uom), "Units created", 201);
+        return ApiResponse::send(new UnitsResource($uom), "Units created", true, 201);
     }
 
     public function show($id)
     {
         $uom = $this->service->findById($id);
-        if (!$uom) return ApiResponse::send(null, "Units not found", 404);
+        if (!$uom) {
+            return ApiResponse::send(null, "Units not found", false, 404);
+        }
 
         return ApiResponse::send(new UnitsResource($uom), "Units retrieved");
     }
@@ -49,7 +51,9 @@ class UnitsController extends Controller
     public function update(UpdateUnitsRequest $request, $id)
     {
         $uom = $this->service->findById($id);
-        if (!$uom) return ApiResponse::send(null, "Units not found", 404);
+        if (!$uom) {
+            return ApiResponse::send(null, "Units not found", false, 404);
+        }
 
         $dto = new UpdateUnitsDTO(
             code: $request->code ?? null,
@@ -64,7 +68,9 @@ class UnitsController extends Controller
     public function destroy($id)
     {
         $uom = $this->service->findById($id);
-        if (!$uom) return ApiResponse::send(null, "Units not found", 404);
+        if (!$uom) {
+            return ApiResponse::send(null, "Units not found", false, 404);
+        }
 
         $this->service->delete($uom);
         return ApiResponse::send(null, "Units deleted");

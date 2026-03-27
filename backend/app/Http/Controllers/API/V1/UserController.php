@@ -24,53 +24,30 @@ class UserController extends Controller
 
     public function index($organization_id = "")
     {
-        try {
-            $users = $this->service->getUsers($organization_id);
-            return ApiResponse::send(data: new UserCollection($users), message: "Users retrieved");
-        } catch (Exception $e) {
-            return ApiResponse::send(
-                data: null,
-                message: "Something went wrong",
-                success: false,
-                code: 500,
-                errors: [
-                    "exception" => [$e->getMessage()]
-                ]
-            );
-        }
+        $users = $this->service->getUsers($organization_id);
+        return ApiResponse::send(data: new UserCollection($users), message: "Users retrieved");
     }
 
     public function store(StoreUserRequest $request)
     {
-        try {
-            $dto = new CreateUserDTO(
-                name: $request->name,
-                email: $request->email,
-                password: $request->password,
-                metadata: $request->metadata ?? null,
-                is_active: $request->is_active ?? true
-            );
+        $dto = new CreateUserDTO(
+            name: $request->name,
+            email: $request->email,
+            password: $request->password,
+            metadata: $request->metadata ?? null,
+            is_active: $request->is_active ?? true
+        );
 
-            $user = $this->service->create($dto);
-            return ApiResponse::send(data: new UserResource($user), message: "User created", success: true, code: 201);
-        } catch (Exception $e) {
-            return ApiResponse::send(
-                data: null,
-                message: "Something went wrong",
-                success: false,
-                code: 500,
-                errors: [
-                    $e->getMessage()
-                ]
-            );
-        }
+        $user = $this->service->create($dto);
+
+        return ApiResponse::send(data: new UserResource($user), message: "User created", success: true, code: 201);
     }
 
     public function show($id)
     {
         $user = $this->service->showUser($id);
         if (!$user) {
-            return ApiResponse::send(null, "User not found", 404);
+            return ApiResponse::send(null, "User not found", false, 404);
         }
         return ApiResponse::send(new UserResource($user), "User retrieved");
     }
@@ -79,7 +56,7 @@ class UserController extends Controller
     {
         $user = $this->service->showUser($id);
         if (!$user) {
-            return ApiResponse::send(null, "User not found", 404);
+            return ApiResponse::send(null, "User not found", false, 404);
         }
 
         $dto = new UpdateUserDTO(
@@ -98,7 +75,7 @@ class UserController extends Controller
     {
         $user = $this->service->showUser($id);
         if (!$user) {
-            return ApiResponse::send(null, "User not found", 404);
+            return ApiResponse::send(null, "User not found", false, 404);
         }
 
         $this->service->delete($user);

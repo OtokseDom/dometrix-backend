@@ -39,14 +39,14 @@ class OrganizationController extends Controller
 
         $organization = $this->service->createOrganization($dto);
 
-        return ApiResponse::send(new OrganizationResource($organization), "Organization created", 201);
+        return ApiResponse::send(new OrganizationResource($organization), "Organization created", true, 201);
     }
 
     public function show($id)
     {
         $organization = $this->service->showOrganization($id);
         if (!$organization) {
-            return ApiResponse::send(null, "Organization not found", 404);
+            return ApiResponse::send(null, "Organization not found", false, 404);
         }
 
         return ApiResponse::send(new OrganizationResource($organization), "Organization retrieved");
@@ -56,7 +56,7 @@ class OrganizationController extends Controller
     {
         $organization = $this->service->showOrganization($id);
         if (!$organization) {
-            return ApiResponse::send(null, "Organization not found", 404);
+            return ApiResponse::send(null, "Organization not found", false, 404);
         }
 
         $dto = new UpdateOrganizationDTO(
@@ -75,7 +75,7 @@ class OrganizationController extends Controller
     {
         $organization = $this->service->showOrganization($id);
         if (!$organization) {
-            return ApiResponse::send(null, "Organization not found", 404);
+            return ApiResponse::send(null, "Organization not found", false, 404);
         }
 
         $this->service->deleteOrganization($organization);

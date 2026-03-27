@@ -34,14 +34,14 @@ class RoleController extends Controller
         );
 
         $role = $this->service->create($dto);
-        return ApiResponse::send(new RoleResource($role), "Role created", 201);
+        return ApiResponse::send(new RoleResource($role), "Role created", true, 201);
     }
 
     public function show($id)
     {
         $role = $this->service->showRole($id);
         if (!$role) {
-            return ApiResponse::send(null, "Role not found", 404);
+            return ApiResponse::send(null, "Role not found", false, 404);
         }
         return ApiResponse::send(new RoleResource($role), "Role retrieved");
     }
@@ -50,7 +50,7 @@ class RoleController extends Controller
     {
         $role = $this->service->showRole($id);
         if (!$role) {
-            return ApiResponse::send(null, "Role not found", 404);
+            return ApiResponse::send(null, "Role not found", false, 404);
         }
 
         $dto = new UpdateRoleDTO(
@@ -66,7 +66,7 @@ class RoleController extends Controller
     {
         $role = $this->service->showRole($id);
         if (!$role) {
-            return ApiResponse::send(null, "Role not found", 404);
+            return ApiResponse::send(null, "Role not found", false, 404);
         }
 
         $this->service->delete($role);

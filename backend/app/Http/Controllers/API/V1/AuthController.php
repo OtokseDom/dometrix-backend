@@ -36,7 +36,7 @@ class AuthController extends Controller
 
         $organizationUser = $this->service->register($dto);
         return ApiResponse::send(new OrganizationUserResource($organizationUser), "User registered successfully",
-            201);
+            true, 201);
     }
 
     public function login(LoginRequest $request)
@@ -45,7 +45,7 @@ class AuthController extends Controller
         $token = $this->service->login($dto);
 
         if (!$token) {
-            return ApiResponse::send(null, "Invalid credentials", 401);
+            return ApiResponse::send(null, "Invalid credentials", false, 401);
         }
 
         return ApiResponse::send(['token' => $token], "Login successful");
@@ -69,7 +69,7 @@ class AuthController extends Controller
 
         $success = $this->service->resetPassword($dto);
         if (!$success) {
-            return ApiResponse::send(null, "Invalid token or email", 500);
+            return ApiResponse::send(null, "Invalid token or email", false, 500);
         }
 
         return ApiResponse::send(null, "Password reset successful");
