@@ -89,4 +89,11 @@ class AuthService
 
         return true;
     }
+
+    public function getUserWithOrgs(string $email): ?User
+    {
+        return User::where('email', $email)
+            ->with('organizations') // eager load pivot info
+            ->first();
+    }
 }

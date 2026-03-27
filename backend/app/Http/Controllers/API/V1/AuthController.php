@@ -11,6 +11,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\PasswordResetRequest;
 use App\Helpers\ApiResponse;
+use App\Http\Resources\AuthUserResource;
 use App\Http\Resources\OrganizationUserResource;
 use Illuminate\Http\Request;
 
@@ -48,7 +49,13 @@ class AuthController extends Controller
             return ApiResponse::send(null, "Invalid credentials", false, 401);
         }
 
-        return ApiResponse::send(['token' => $token], "Login successful");
+        // Get authenticated user with organizations
+        $user = $this->service->getUserWithOrgs($request->email);
+
+        return ApiResponse::send([
+            'token' => $token,
+            'user' => new AuthUserResource($user),
+        ], "Login successful");
     }
 
     public function logout(Request $request)
