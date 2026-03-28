@@ -20,15 +20,15 @@
 - ✅ Refactor User,Role controller and service function names
 - ✅ Refactor Auth service
 - ✅ Refactor Auth DTOs
-- Refactor API response structure
-- Business factory upon new registration
+- ✅ Refactor API response structure
+- ✅ Business factory upon new registration
     - masters, organization
-- Seeder for Units
-- Migration for currencies
-- Currency model
-- Currency resource
-- Currency requests
-- Currency DTOs
-- Currency service
-- Currency controller
-- Currency route
+- ✅ Seeder for Units
+- ✅ Migration for currencies
+- ✅ Currency model
+- ✅ Currency resource
+- ✅ Currency requests
+- ✅ Currency DTOs
+- ✅ Currency service
+- ✅ Currency controller
+- ✅ Currency route
