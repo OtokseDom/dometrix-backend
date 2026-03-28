@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->string('code')->unique()->comment('ISO currency code like USD, EUR');
             $table->string('name')->comment('Full currency name');
-            $table->decimal('exchange_rate', 20, 6)->default(1.0)->comment('Base rate vs primary currency');
+            //            $table->decimal('exchange_rate', 20, 6)->default(1.0)->comment('Base rate vs primary currency');
             $table->jsonb('metadata')->nullable();
             $table->timestamps();
             $table->softDeletes();

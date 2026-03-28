@@ -1,0 +1,16 @@
+$kind: http-request
+name: Create Currency
+method: POST
+url: '{{base_url}}/api/v1/currencies'
+order: 2000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "code": "AUD",
+      "name": "Australian Dollar",
+      "metadata": {}
+    }

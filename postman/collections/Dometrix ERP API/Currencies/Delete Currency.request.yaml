@@ -1,0 +1,7 @@
+$kind: http-request
+name: Delete Currency
+method: DELETE
+url: '{{base_url}}/api/v1/currencies/{{currency_id}}'
+order: 5000
+headers:
+  Accept: application/json

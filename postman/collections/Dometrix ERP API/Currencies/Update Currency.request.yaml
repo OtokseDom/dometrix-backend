@@ -1,0 +1,16 @@
+$kind: http-request
+name: Update Currency
+method: PUT
+url: "{{base_url}}/api/v1/currencies/{{currency_id}}"
+order: 4000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "code": "AUD",
+      "name": "Australian Dollar",
+      "metadata": {}
+    }
