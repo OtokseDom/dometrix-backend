@@ -7,6 +7,8 @@ class CreateUnitsDTO
     public function __construct(
         public string $code,
         public string $name,
+        public string $type,
         public ?array $metadata = null
-    ) {}
+    ) {
+    }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use App\Domain\Units\Services\UnitsService;
 use App\Domain\Units\DTOs\CreateUnitsDTO;
 use App\Domain\Units\DTOs\UpdateUnitsDTO;
+use App\Domain\Units\Services\UnitsService;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUnitsRequest;
 use App\Http\Requests\UpdateUnitsRequest;
 use App\Http\Resources\UnitsResource;
@@ -23,7 +23,7 @@ class UnitsController extends Controller
 
     public function index()
     {
-        return ApiResponse::send(new UnitsCollection($this->service->listAll()), "Units retrieved");
+        return ApiResponse::send(new UnitsCollection($this->service->getUnits()), "Units retrieved");
     }
 
     public function store(StoreUnitsRequest $request)
@@ -31,48 +31,44 @@ class UnitsController extends Controller
         $dto = new CreateUnitsDTO(
             code: $request->code,
             name: $request->name,
+            type: $request->type,
             metadata: $request->metadata ?? null
         );
 
-        $uom = $this->service->create($dto);
-        return ApiResponse::send(new UnitsResource($uom), "Units created", true, 201);
+        $unit = $this->service->create($dto);
+        return ApiResponse::send(new UnitsResource($unit), "Units created", true, 201);
     }
 
     public function show($id)
     {
-        $uom = $this->service->findById($id);
-        if (!$uom) {
-            return ApiResponse::send(null, "Units not found", false, 404);
-        }
+        $unit = $this->service->showUnit($id);
+        $this->service->findOrFail($id);
 
-        return ApiResponse::send(new UnitsResource($uom), "Units retrieved");
+        return ApiResponse::send(new UnitsResource($unit), "Units retrieved");
     }
 
     public function update(UpdateUnitsRequest $request, $id)
     {
-        $uom = $this->service->findById($id);
-        if (!$uom) {
-            return ApiResponse::send(null, "Units not found", false, 404);
-        }
+        $unit = $this->service->showUnit($id);
+        $this->service->findOrFail($id);
 
         $dto = new UpdateUnitsDTO(
             code: $request->code ?? null,
             name: $request->name ?? null,
+            type: $request->type ?? null,
             metadata: $request->metadata ?? null
         );
 
-        $uom = $this->service->update($uom, $dto);
-        return ApiResponse::send(new UnitsResource($uom), "Units updated");
+        $unit = $this->service->update($unit, $dto);
+        return ApiResponse::send(new UnitsResource($unit), "Units updated");
     }
 
     public function destroy($id)
     {
-        $uom = $this->service->findById($id);
-        if (!$uom) {
-            return ApiResponse::send(null, "Units not found", false, 404);
-        }
+        $unit = $this->service->showUnit($id);
+        $this->service->findOrFail($id);
 
-        $this->service->delete($uom);
+        $this->service->delete($unit);
         return ApiResponse::send(null, "Units deleted");
     }
 }

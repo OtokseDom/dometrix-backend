@@ -16,8 +16,9 @@ class UpdateUnitsRequest extends FormRequest
         $uomId = $this->route('unit');
 
         return [
-            'code' => 'sometimes|string|unique:units,code,' . $uomId . ',id',
+            'code' => 'sometimes|string|unique:units,code,'.$uomId.',id',
             'name' => 'sometimes|string',
+            'type' => 'required|string',
             'metadata' => 'sometimes|array'
         ];
     }

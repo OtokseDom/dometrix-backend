@@ -16,6 +16,7 @@ class StoreUnitsRequest extends FormRequest
         return [
             'code' => 'required|string|unique:units,code',
             'name' => 'required|string',
+            'type' => 'required|string',
             'metadata' => 'nullable|array'
         ];
     }
