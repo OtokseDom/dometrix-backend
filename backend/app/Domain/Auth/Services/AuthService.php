@@ -8,7 +8,9 @@ use App\Domain\Auth\DTOs\PasswordResetDTO;
 use App\Domain\Organization\Models\Organization;
 use App\Domain\Organization\Models\OrganizationUser;
 use App\Domain\Organization\Services\OrganizationService;
+use App\Domain\Role\Models\Role;
 use App\Domain\User\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
@@ -30,16 +32,23 @@ class AuthService
         $result = null;
 
         DB::transaction(function () use ($dto, &$result) {
+            $organization = null;
+            $roleId = $dto->role_id;
             $status = 'pending';
 
             if (!empty($dto->organization_name) && empty($dto->organization_code)) {
                 $organization = Organization::create([
                     'name' => $dto->organization_name,
                     'code' => strtoupper(uniqid()),
-                    'timezone' => 'UTC',
-                    'currency' => 'USD',
                     'metadata' => [],
                 ]);
+
+                // Generate master data FIRST
+                $adminRole = self::generateMasterData($organization->id);
+
+                // Force admin role
+                $roleId = $adminRole->id;
+
                 $status = 'active';
             } elseif (!empty($dto->organization_code) && empty($dto->organization_name)) {
                 $organization = Organization::where('code', $dto->organization_code)->firstOrFail();
@@ -53,10 +62,29 @@ class AuthService
                 'password' => Hash::make($dto->password),
             ]);
 
-            $result = $this->organizationService->addUser($organization, $user->id, $dto->role_id, $status);
+            $result = $this->organizationService->addUser($organization, $user->id, $roleId, $status);
         });
 
         return $result;
+    }
+
+    public static function generateMasterData($organizationId): Role
+    {
+        $now = Carbon::now();
+
+        $adminRole = Role::create([
+            'organization_id' => $organizationId,
+            'name' => 'Admin',
+            'permissions' => [],
+        ]);
+
+        Role::create([
+            'organization_id' => $organizationId,
+            'name' => 'Employee',
+            'permissions' => [],
+        ]);
+
+        return $adminRole;
     }
 
     public function login(LoginDTO $dto): ?string
@@ -96,4 +124,5 @@ class AuthService
             ->with('organizations') // eager load pivot info
             ->first();
     }
+
 }
