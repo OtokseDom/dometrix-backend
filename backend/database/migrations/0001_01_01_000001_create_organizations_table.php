@@ -11,8 +11,6 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('code')->unique();
-            $table->string('timezone')->default('UTC')->comment('Organization timezone for reporting');
-            $table->string('currency')->default('USD')->comment('Default currency');
             $table->jsonb('metadata')->nullable()->comment('Flexible extra data for ERP modules');
             $table->timestamps();
             $table->softDeletes();

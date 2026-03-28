@@ -14,8 +14,6 @@ class OrganizationUserResource extends JsonResource
                 'id' => $this->organization->id,
                 'name' => $this->organization->name,
                 'code' => $this->organization->code,
-                'timezone' => $this->organization->timezone,
-                'currency' => $this->organization->currency,
                 'metadata' => $this->organization->metadata,
             ]),
             'user' => $this->whenLoaded('user', fn() => [

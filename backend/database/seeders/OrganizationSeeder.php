@@ -17,8 +17,6 @@ class OrganizationSeeder extends Seeder
             'id' => (string) Str::uuid(),
             'name' => "Default",
             'code' => "default",
-            'timezone' => "UTC",
-            'currency' => "USD",
             'metadata' => [],
         ]);
     }

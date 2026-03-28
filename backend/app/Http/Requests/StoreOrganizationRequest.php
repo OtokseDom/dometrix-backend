@@ -16,8 +16,6 @@ class StoreOrganizationRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'code' => 'required|string|max:50|unique:organizations,code',
-            'timezone' => 'sometimes|string|max:50',
-            'currency' => 'sometimes|string|max:10',
             'metadata' => 'sometimes|array',
         ];
     }

@@ -17,9 +17,7 @@ class UpdateOrganizationRequest extends FormRequest
 
         return [
             'name' => 'sometimes|string|max:255',
-            'code' => 'sometimes|string|max:50|unique:organizations,code,' . $organizationId . ',id',
-            'timezone' => 'sometimes|string|max:50',
-            'currency' => 'sometimes|string|max:10',
+            'code' => 'sometimes|string|max:50|unique:organizations,code,'.$organizationId.',id',
             'metadata' => 'sometimes|array',
         ];
     }

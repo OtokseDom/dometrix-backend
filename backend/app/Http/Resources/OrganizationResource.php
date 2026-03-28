@@ -12,8 +12,6 @@ class OrganizationResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
-            'timezone' => $this->timezone,
-            'currency' => $this->currency,
             'metadata' => $this->metadata,
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
