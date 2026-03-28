@@ -12,7 +12,5 @@ body:
     {
       "name": "Acme Corp",
       "code": "ACME",
-      "timezone": "UTC",
-      "currency": "USD",
       "metadata": {}
     }

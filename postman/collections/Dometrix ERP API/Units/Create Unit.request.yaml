@@ -10,7 +10,7 @@ body:
   type: json
   content: |-
     {
-      "code": "KG",
-      "name": "Kilogram",
+      "code": "kg",
+      "name": "kilogram",
       "metadata": {}
     }
