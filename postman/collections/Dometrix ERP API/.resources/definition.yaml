@@ -16,6 +16,8 @@ variables:
     value: ''
   - key: unit_id
     value: ''
+  - key: currency_id
+    value: ''
 auth:
   type: bearer
   credentials:

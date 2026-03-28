@@ -50,7 +50,9 @@ class RefreshDatabaseCommand extends Command
             'OrganizationSeeder',
             'UserSeeder',
             'RoleSeeder',
-            'OrganizationUserSeeder'
+            'OrganizationUserSeeder',
+            'UnitSeeder',
+            'CurrencySeeder',
         ];
 
         foreach ($seeders as $seeder) {
