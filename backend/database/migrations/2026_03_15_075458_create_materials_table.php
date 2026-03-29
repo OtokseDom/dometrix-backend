@@ -10,17 +10,19 @@ return new class extends Migration {
         Schema::create('materials', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('organization_id');
-            $table->string('code')->comment('Material unique code per organization');
+            $table->string('code');
             $table->string('name');
-            $table->string('category')->nullable();
-            $table->string('unit_of_measure');
+            $table->uuid('category_id')->nullable();
+            $table->uuid('unit_id');
             $table->jsonb('metadata')->nullable()->comment('Extra fields for ERP extensions');
             $table->timestamps();
             $table->softDeletes();
 
             $table->unique(['organization_id', 'code']);
             $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
-            $table->index('category');
+            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->index(['category_id', 'unit_id']);
         });
     }
 

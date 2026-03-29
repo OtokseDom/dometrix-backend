@@ -12,13 +12,15 @@ return new class extends Migration {
             $table->uuid('organization_id');
             $table->string('code')->comment('Unique product code per organization');
             $table->string('name');
-            $table->string('unit_of_measure');
+            $table->string('description')->nullable();
+            $table->uuid('unit_id');
             $table->jsonb('metadata')->nullable()->comment('Extra fields for future ERP modules');
             $table->timestamps();
             $table->softDeletes();
 
             $table->unique(['organization_id', 'code']);
             $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
+            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
