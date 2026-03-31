@@ -11,11 +11,11 @@ class UnitConversionHelper
      * kg => g: 1000, kg => mg: 1000000, etc.
      */
     public static function convert(
-        decimal|float $quantity,
+        float $quantity,
         string $fromUnitCode,
         string $toUnitCode,
         string $organizationId
-    ): decimal|float {
+    ): float {
         if ($fromUnitCode === $toUnitCode) {
             return $quantity;
         }

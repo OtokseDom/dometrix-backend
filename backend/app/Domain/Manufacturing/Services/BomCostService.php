@@ -139,8 +139,8 @@ class BomCostService
      */
     protected function costMaterialBomItem(
         BomItem $bomItem,
-        decimal|float $quantity,
-        decimal|float $wastagePercent,
+        float $quantity,
+        float $wastagePercent,
         string $unitCode,
         string $organizationId,
         ?string $effectiveDate
@@ -183,8 +183,8 @@ class BomCostService
      */
     protected function costSubProductBomItem(
         BomItem $bomItem,
-        decimal|float $quantity,
-        decimal|float $wastagePercent,
+        float $quantity,
+        float $wastagePercent,
         string $unitCode,
         string $organizationId,
         ?string $effectiveDate
