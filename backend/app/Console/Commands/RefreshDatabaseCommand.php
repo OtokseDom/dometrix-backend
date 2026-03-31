@@ -36,7 +36,7 @@ class RefreshDatabaseCommand extends Command
             Artisan::call('migrate:fresh', ['--force' => true], $this->outputHandler);
             $this->info("\n✅ Migrations completed successfully.\n");
         } catch (\Exception $e) {
-            $this->error("\n❌ Migration failed: ".$e->getMessage());
+            $this->error("\n❌ Migration failed: " . $e->getMessage());
             return; // stop operation
         }
 
@@ -45,14 +45,25 @@ class RefreshDatabaseCommand extends Command
         // -----------------------------
         $this->info("🌱 Running database seeders...");
 
-        // List of seeders (adjust as needed)
+        // List of seeders in CORRECT ORDER to prevent foreign key violations
         $seeders = [
+            // Base Seeders
             'OrganizationSeeder',
             'UserSeeder',
             'RoleSeeder',
             'OrganizationUserSeeder',
             'UnitSeeder',
             'CurrencySeeder',
+
+            // ERP Module Seeders
+            'CategorySeeder',
+            'TaxSeeder',
+            'WarehouseSeeder',
+            'MaterialSeeder',
+            'ProductSeeder',
+            'BomSeeder',
+            'BomItemSeeder',
+            'MaterialPriceSeeder',
         ];
 
         foreach ($seeders as $seeder) {
@@ -60,7 +71,7 @@ class RefreshDatabaseCommand extends Command
                 Artisan::call('db:seed', ['--class' => $seeder, '--force' => true], $this->outputHandler);
                 $this->info("✅ {$seeder} seeded successfully.");
             } catch (\Exception $e) {
-                $this->error("❌ Seeder {$seeder} failed: ".$e->getMessage()."\n");
+                $this->error("❌ Seeder {$seeder} failed: " . $e->getMessage() . "\n");
                 return; // stop operation immediately
             }
         }
