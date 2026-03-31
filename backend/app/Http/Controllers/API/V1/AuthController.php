@@ -14,6 +14,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Resources\AuthUserResource;
 use App\Http\Resources\OrganizationUserResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -36,8 +37,43 @@ class AuthController extends Controller
         );
 
         $organizationUser = $this->service->register($dto);
-        return ApiResponse::send(new OrganizationUserResource($organizationUser), "User registered successfully",
-            true, 201);
+
+        $masterData = [
+            'roles' => DB::table('roles')
+                ->where('organization_id', $organizationUser->organization_id)
+                ->count(),
+            'products' => DB::table('products')
+                ->where('organization_id', $organizationUser->organization_id)
+                ->count(),
+            'materials' => DB::table('materials')
+                ->where('organization_id', $organizationUser->organization_id)
+                ->count(),
+            'boms' => DB::table('boms')
+                ->where('organization_id', $organizationUser->organization_id)
+                ->count(),
+            'warehouses' => DB::table('warehouses')
+                ->where('organization_id', $organizationUser->organization_id)
+                ->count(),
+            'categories' => DB::table('categories')
+                ->where('organization_id', $organizationUser->organization_id)
+                ->count(),
+            'settings' => DB::table('settings')
+                ->where('organization_id', $organizationUser->organization_id)
+                ->exists(),
+        ];
+
+        $data = [
+            'user' => new AuthUserResource($organizationUser->user),
+            'role' => $organizationUser->role,
+            'master_data_counts' => $masterData,
+        ];
+
+        return ApiResponse::send(
+            $data,
+            "User registered successfully",
+            true,
+            201
+        );
     }
 
     public function login(LoginRequest $request)
