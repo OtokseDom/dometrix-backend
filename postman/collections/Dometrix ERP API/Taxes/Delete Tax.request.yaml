@@ -1,0 +1,7 @@
+$kind: http-request
+name: Delete Tax
+method: DELETE
+url: "{{base_url}}/api/v1/taxes/{{resource_id}}"
+order: 5000
+headers:
+    Accept: application/json

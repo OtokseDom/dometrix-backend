@@ -1,0 +1,7 @@
+$kind: http-request
+name: Delete Category
+method: DELETE
+url: "{{base_url}}/api/v1/categories/{{resource_id}}"
+order: 5000
+headers:
+    Accept: application/json

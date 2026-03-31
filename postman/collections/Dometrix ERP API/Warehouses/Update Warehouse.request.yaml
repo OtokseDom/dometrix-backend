@@ -1,0 +1,21 @@
+$kind: http-request
+name: Update Warehouse
+method: PATCH
+url: "{{base_url}}/api/v1/warehouses/{{resource_id}}"
+order: 4000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "name": "Main Warehouse - Expanded",
+          "location": "123 Industrial Ave, City, State (Building B)",
+          "is_active": true,
+          "metadata": {
+            "capacity": "8000 units",
+            "climate_controlled": true,
+            "expansion_date": "2026-04-01"
+          }
+        }

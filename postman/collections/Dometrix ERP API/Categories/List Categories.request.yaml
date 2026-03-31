@@ -1,0 +1,7 @@
+$kind: http-request
+name: List Categories
+method: GET
+url: "{{base_url}}/api/v1/categories"
+order: 1000
+headers:
+    Accept: application/json

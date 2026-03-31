@@ -1,0 +1,20 @@
+$kind: http-request
+name: Create Category
+method: POST
+url: "{{base_url}}/api/v1/categories"
+order: 2000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "code": "CAT001",
+          "name": "Raw Materials",
+          "type": "material",
+          "parent_id": null,
+          "metadata": {
+            "description": "All raw materials used in manufacturing"
+          }
+        }

@@ -1,0 +1,20 @@
+$kind: http-request
+name: Create Tax
+method: POST
+url: "{{base_url}}/api/v1/taxes"
+order: 2000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "code": "TAX001",
+          "name": "Sales Tax 10%",
+          "rate": "10.00",
+          "is_active": true,
+          "metadata": {
+            "jurisdiction": "General"
+          }
+        }

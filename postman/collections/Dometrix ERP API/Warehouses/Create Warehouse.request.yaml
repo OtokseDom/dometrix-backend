@@ -1,0 +1,23 @@
+$kind: http-request
+name: Create Warehouse
+method: POST
+url: "{{base_url}}/api/v1/warehouses"
+order: 2000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "code": "WH001",
+          "name": "Main Warehouse",
+          "type": "general",
+          "location": "123 Industrial Ave, City, State",
+          "is_active": true,
+          "manager_user_id": null,
+          "metadata": {
+            "capacity": "5000 units",
+            "climate_controlled": true
+          }
+        }
