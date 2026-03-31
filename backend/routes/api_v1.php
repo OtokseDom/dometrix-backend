@@ -8,6 +8,7 @@ use App\Http\Controllers\API\V1\RoleController;
 use App\Http\Controllers\API\V1\OrganizationUserController;
 use App\Http\Controllers\API\V1\UnitsController;
 use App\Http\Controllers\API\V1\CurrenciesController;
+use App\Http\Controllers\API\V1\ManufacturingCostController;
 
 Route::prefix('v1')->group(function () {
 
@@ -26,5 +27,16 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('organization-users', OrganizationUserController::class);
         Route::apiResource('units', UnitsController::class);
         Route::apiResource('currencies', CurrenciesController::class);
+
+        // MANUFACTURING & COSTING ROUTES
+        Route::prefix('manufacturing')->group(function () {
+            Route::post('material-cost', [ManufacturingCostController::class, 'calculateMaterialCost']);
+            Route::get('materials/{id}/price-history', [ManufacturingCostController::class, 'getMaterialPriceHistory']);
+
+            Route::post('bom-cost', [ManufacturingCostController::class, 'calculateBomCost']);
+
+            Route::post('product-cost', [ManufacturingCostController::class, 'calculateProductCost']);
+            Route::get('products/{id}/cost-summary', [ManufacturingCostController::class, 'getProductCostSummary']);
+        });
     });
 });
