@@ -1,0 +1,8 @@
+$kind: http-request
+name: Get Material Price History
+description: Retrieve historical pricing data for a material within a date range
+method: GET
+url: "{{base_url}}/api/v1/manufacturing/materials/{{material_id}}/price-history?from_date=2026-01-01&to_date=2026-03-31"
+order: 2000
+headers:
+    Accept: application/json

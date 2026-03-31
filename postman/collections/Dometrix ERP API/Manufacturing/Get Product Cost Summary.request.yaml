@@ -1,0 +1,8 @@
+$kind: http-request
+name: Get Product Cost Summary
+description: Retrieve a cost summary for a specific product at a given effective date
+method: GET
+url: "{{base_url}}/api/v1/manufacturing/products/{{product_id}}/cost-summary?effective_date=2026-03-31"
+order: 5000
+headers:
+    Accept: application/json

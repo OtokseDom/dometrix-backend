@@ -1,0 +1,3 @@
+$kind: collection
+name: Manufacturing
+description: Manufacturing cost engine endpoints for calculating material, BOM, and product costs

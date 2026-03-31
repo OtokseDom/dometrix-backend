@@ -1,41 +1,52 @@
-$kind: collection
-name: Dometrix ERP API
-description: API collection for Dometrix ERP Laravel-based system
+$kind: environment
+name: Local Development
+description: Development environment for Dometrix ERP API with Manufacturing Cost Engine
 variables:
     - key: base_url
       value: "http://localhost:8000"
+      enabled: true
     - key: auth_token
       value: ""
+      enabled: true
     - key: organization_id
       value: ""
+      enabled: true
     - key: user_id
       value: ""
+      enabled: true
     - key: role_id
       value: ""
+      enabled: true
     - key: organization_user_id
       value: ""
+      enabled: true
     - key: unit_id
       value: ""
+      enabled: true
     - key: currency_id
       value: ""
+      enabled: true
     - key: material_id
       value: ""
+      enabled: true
     - key: product_id
       value: ""
+      enabled: true
     - key: bom_id
       value: ""
+      enabled: true
     - key: material_unit_cost
       value: ""
+      enabled: true
     - key: bom_total_cost
       value: ""
+      enabled: true
     - key: bom_unit_cost
       value: ""
+      enabled: true
     - key: product_total_cost
       value: ""
+      enabled: true
     - key: product_unit_cost
       value: ""
-auth:
-    type: bearer
-    credentials:
-        - key: token
-          value: "{{auth_token}}"
+      enabled: true

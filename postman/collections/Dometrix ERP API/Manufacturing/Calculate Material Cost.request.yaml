@@ -1,0 +1,29 @@
+$kind: http-request
+name: Calculate Material Cost
+description: Calculate the cost of a single material with quantity at a specific effective date
+method: POST
+url: "{{base_url}}/api/v1/manufacturing/material-cost"
+order: 1000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "organization_id": "{{organization_id}}",
+          "material_id": "{{material_id}}",
+          "quantity": 10.5,
+          "effective_date": "2026-03-31",
+          "costing_method": "weighted_average"
+        }
+scripts:
+    - type: afterResponse
+      code: |-
+          if (pm.response.code === 200) {
+              var jsonData = pm.response.json();
+              if (jsonData.data && jsonData.data.unitCost) {
+                  pm.collectionVariables.set("material_unit_cost", jsonData.data.unitCost);
+              }
+          }
+      language: text/javascript
