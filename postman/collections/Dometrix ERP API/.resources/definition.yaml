@@ -2,40 +2,26 @@ $kind: collection
 name: Dometrix ERP API
 description: API collection for Dometrix ERP Laravel-based system
 variables:
-    - key: base_url
-      value: "http://localhost:8000"
-    - key: auth_token
-      value: ""
-    - key: organization_id
-      value: ""
-    - key: user_id
-      value: ""
-    - key: role_id
-      value: ""
-    - key: organization_user_id
-      value: ""
-    - key: unit_id
-      value: ""
-    - key: currency_id
-      value: ""
-    - key: material_id
-      value: ""
-    - key: product_id
-      value: ""
-    - key: bom_id
-      value: ""
-    - key: material_unit_cost
-      value: ""
-    - key: bom_total_cost
-      value: ""
-    - key: bom_unit_cost
-      value: ""
-    - key: product_total_cost
-      value: ""
-    - key: product_unit_cost
-      value: ""
+    base_url: http://localhost:8000
+    auth_token: ""
+    organization_id: ""
+    user_id: ""
+    role_id: ""
+    organization_user_id: ""
+    unit_id: ""
+    currency_id: ""
+    category_id: ""
+    tax_id: ""
+    warehouse_id: ""
+    material_id: ""
+    product_id: ""
+    bom_id: ""
+    material_unit_cost: ""
+    bom_total_cost: ""
+    bom_unit_cost: ""
+    product_total_cost: ""
+    product_unit_cost: ""
 auth:
     type: bearer
     credentials:
-        - key: token
-          value: "{{auth_token}}"
+        token: "{{auth_token}}"

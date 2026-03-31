@@ -2,6 +2,13 @@
 workspace:
   id: 86e370ef-82f8-49d4-8ea5-0db2b2447eb2
 
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+cloudResources:
+  environments:
+    ..\postman\environments\Local Development.environment.yaml: d66fd06a-4f70-5059-8fe5-a872a963d073
+  collections:
+    ..\postman\collections\Dometrix ERP API: 26526371-c157def5-2d76-43d7-93f4-002b069af5ca
+
 # All resources in the `postman/` folder are automatically registered in Local View.
 # Point to additional files outside the `postman/` folder to register them individually. Example:
 #localResources:

@@ -26,6 +26,15 @@ variables:
     - key: currency_id
       value: ""
       enabled: true
+    - key: category_id
+      value: ""
+      enabled: true
+    - key: tax_id
+      value: ""
+      enabled: true
+    - key: warehouse_id
+      value: ""
+      enabled: true
     - key: material_id
       value: ""
       enabled: true
