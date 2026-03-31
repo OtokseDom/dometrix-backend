@@ -42,6 +42,9 @@ class DatabaseSeeder extends Seeder
 
             // Pricing
             MaterialPriceSeeder::class,
+
+            // Settings
+            SettingSeeder::class,
         ]);
     }
 }

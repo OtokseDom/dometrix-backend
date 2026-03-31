@@ -64,6 +64,7 @@ class RefreshDatabaseCommand extends Command
             'BomSeeder',
             'BomItemSeeder',
             'MaterialPriceSeeder',
+            'SettingSeeder',
         ];
 
         foreach ($seeders as $seeder) {
