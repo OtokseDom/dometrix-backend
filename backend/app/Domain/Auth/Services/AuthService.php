@@ -27,7 +27,7 @@ class AuthService
     /**
      * @throws Throwable
      */
-    public function register(RegisterDTO $dto): OrganizationUser
+    public function register(RegisterDTO $dto): ?OrganizationUser
     {
         $result = null;
 
@@ -124,5 +124,4 @@ class AuthService
             ->with('organizations') // eager load pivot info
             ->first();
     }
-
 }
