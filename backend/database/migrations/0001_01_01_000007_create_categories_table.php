@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('organization_id')->nullable();
+            $table->uuid('organization_id');
             $table->string('code')->comment('Unique code per org if multi-tenant');
             $table->string('name');
             $table->enum('type', ['material', 'product', 'bom', 'other'])->default('other');

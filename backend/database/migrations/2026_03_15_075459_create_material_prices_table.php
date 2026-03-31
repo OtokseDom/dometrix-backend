@@ -19,8 +19,9 @@ return new class extends Migration {
 
             $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
             $table->foreign('material_id')->references('id')->on('materials')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
 
-            $table->index(['material_id', 'effective_date']);
+            $table->unique(['organization_id', 'material_id', 'effective_date']);
         });
     }
 
