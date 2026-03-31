@@ -8,6 +8,7 @@ use App\Domain\Auth\DTOs\PasswordResetDTO;
 use App\Domain\Organization\Models\Organization;
 use App\Domain\Organization\Models\OrganizationUser;
 use App\Domain\Organization\Services\OrganizationService;
+use App\Domain\Organization\Services\OrganizationMasterDataService;
 use App\Domain\Role\Models\Role;
 use App\Domain\User\Models\User;
 use Carbon\Carbon;
@@ -18,10 +19,14 @@ use Throwable;
 class AuthService
 {
     protected OrganizationService $organizationService;
+    protected OrganizationMasterDataService $masterDataService;
 
-    public function __construct(OrganizationService $organizationService)
-    {
+    public function __construct(
+        OrganizationService $organizationService,
+        OrganizationMasterDataService $masterDataService
+    ) {
         $this->organizationService = $organizationService;
+        $this->masterDataService = $masterDataService;
     }
 
     /**
@@ -37,18 +42,18 @@ class AuthService
             $status = 'pending';
 
             if (!empty($dto->organization_name) && empty($dto->organization_code)) {
+                // Create new organization
                 $organization = Organization::create([
                     'name' => $dto->organization_name,
                     'code' => strtoupper(uniqid()),
                     'metadata' => [],
                 ]);
 
-                // Generate master data FIRST
-                $adminRole = self::generateMasterData($organization->id);
+                // Generate complete master data for the new organization
+                $masterDataResult = $this->masterDataService->generate($organization->id);
 
-                // Force admin role
-                $roleId = $adminRole->id;
-
+                // Use the generated Admin role for the registering user
+                $roleId = $masterDataResult['admin_role_id'];
                 $status = 'active';
             } elseif (!empty($dto->organization_code) && empty($dto->organization_name)) {
                 $organization = Organization::where('code', $dto->organization_code)->firstOrFail();
@@ -56,35 +61,18 @@ class AuthService
                 throw new \Exception("Organization not valid");
             }
 
+            // Create user account
             $user = User::create([
                 'name' => $dto->name,
                 'email' => $dto->email,
                 'password' => Hash::make($dto->password),
             ]);
 
+            // Link user to organization with assigned role
             $result = $this->organizationService->addUser($organization, $user->id, $roleId, $status);
         });
 
         return $result;
-    }
-
-    public static function generateMasterData($organizationId): Role
-    {
-        $now = Carbon::now();
-
-        $adminRole = Role::create([
-            'organization_id' => $organizationId,
-            'name' => 'Admin',
-            'permissions' => [],
-        ]);
-
-        Role::create([
-            'organization_id' => $organizationId,
-            'name' => 'Employee',
-            'permissions' => [],
-        ]);
-
-        return $adminRole;
     }
 
     public function login(LoginDTO $dto): ?string
