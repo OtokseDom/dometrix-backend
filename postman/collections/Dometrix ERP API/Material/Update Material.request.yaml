@@ -1,0 +1,19 @@
+$kind: http-request
+name: Update Material
+method: PATCH
+url: "{{base_url}}/api/v1/manufacturing/materials/{{resource_id}}"
+order: 4000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "name": "Steel Sheet Grade A (Premium)",
+          "metadata": {
+            "supplier": "Acme Steel",
+            "certification": "ISO 9001",
+            "updated_by": "system"
+          }
+        }

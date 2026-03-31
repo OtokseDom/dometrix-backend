@@ -1,0 +1,21 @@
+$kind: http-request
+name: Create Product
+method: POST
+url: "{{base_url}}/api/v1/manufacturing/products"
+order: 2000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "code": "PROD001",
+          "name": "Industrial Widget",
+          "unit_id": "550e8400-e29b-41d4-a716-446655440050",
+          "category_id": null,
+          "metadata": {
+            "sku": "IND-WIDGET-001",
+            "manufacturer": "Widget Corp"
+          }
+        }

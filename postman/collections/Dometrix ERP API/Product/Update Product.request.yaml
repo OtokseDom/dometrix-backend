@@ -1,0 +1,18 @@
+$kind: http-request
+name: Update Product
+method: PATCH
+url: "{{base_url}}/api/v1/manufacturing/products/{{resource_id}}"
+order: 4000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "name": "Industrial Widget Pro",
+          "metadata": {
+            "manufacturer": "Widget Corp",
+            "version": "2.0"
+          }
+        }

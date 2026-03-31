@@ -1,0 +1,20 @@
+$kind: http-request
+name: Create BOM
+method: POST
+url: "{{base_url}}/api/v1/manufacturing/boms"
+order: 2000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "code": "BOM001",
+          "name": "Standard Assembly",
+          "product_id": "550e8400-e29b-41d4-a716-446655440201",
+          "metadata": {
+            "version": "1.0",
+            "approved": true
+          }
+        }

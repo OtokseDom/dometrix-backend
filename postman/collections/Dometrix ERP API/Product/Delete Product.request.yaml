@@ -1,0 +1,7 @@
+$kind: http-request
+name: Delete Product
+method: DELETE
+url: "{{base_url}}/api/v1/manufacturing/products/{{resource_id}}"
+order: 5000
+headers:
+    Accept: application/json

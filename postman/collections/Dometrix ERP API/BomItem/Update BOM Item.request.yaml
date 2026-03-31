@@ -1,0 +1,18 @@
+$kind: http-request
+name: Update BOM Item
+method: PATCH
+url: "{{base_url}}/api/v1/manufacturing/bom-items/{{resource_id}}"
+order: 4000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "quantity": "12.0000",
+          "sequence": 2,
+          "metadata": {
+            "notes": "Primary component - updated"
+          }
+        }

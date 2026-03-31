@@ -1,0 +1,16 @@
+$kind: http-request
+name: Create Material Price
+method: POST
+url: "{{base_url}}/api/v1/manufacturing/material-prices"
+order: 2000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "material_id": "550e8400-e29b-41d4-a716-446655440001",
+          "price": "150.50",
+          "effective_date": "2026-03-01"
+        }

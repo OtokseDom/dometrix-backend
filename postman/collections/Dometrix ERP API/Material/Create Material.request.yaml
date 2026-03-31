@@ -1,0 +1,21 @@
+$kind: http-request
+name: Create Material
+method: POST
+url: "{{base_url}}/api/v1/manufacturing/materials"
+order: 2000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "code": "MAT001",
+          "name": "Steel Sheet Grade A",
+          "unit_id": "550e8400-e29b-41d4-a716-446655440050",
+          "category_id": null,
+          "metadata": {
+            "supplier": "Acme Steel",
+            "certification": "ISO 9001"
+          }
+        }

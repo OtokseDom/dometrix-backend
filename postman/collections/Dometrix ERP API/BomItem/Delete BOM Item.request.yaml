@@ -1,0 +1,7 @@
+$kind: http-request
+name: Delete BOM Item
+method: DELETE
+url: "{{base_url}}/api/v1/manufacturing/bom-items/{{resource_id}}"
+order: 5000
+headers:
+    Accept: application/json

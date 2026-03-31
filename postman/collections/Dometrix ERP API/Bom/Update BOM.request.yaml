@@ -1,0 +1,19 @@
+$kind: http-request
+name: Update BOM
+method: PATCH
+url: "{{base_url}}/api/v1/manufacturing/boms/{{resource_id}}"
+order: 4000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "name": "Standard Assembly v2",
+          "metadata": {
+            "version": "2.0",
+            "approved": true,
+            "updated_date": "2026-04-01"
+          }
+        }

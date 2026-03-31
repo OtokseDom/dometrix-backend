@@ -1,0 +1,15 @@
+$kind: http-request
+name: Update Material Price
+method: PATCH
+url: "{{base_url}}/api/v1/manufacturing/material-prices/{{resource_id}}"
+order: 4000
+headers:
+    Content-Type: application/json
+    Accept: application/json
+body:
+    type: json
+    content: |-
+        {
+          "price": "160.75",
+          "effective_date": "2026-04-01"
+        }

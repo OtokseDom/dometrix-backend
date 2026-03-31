@@ -1,0 +1,7 @@
+$kind: http-request
+name: Get BOM
+method: GET
+url: "{{base_url}}/api/v1/manufacturing/boms/{{resource_id}}"
+order: 3000
+headers:
+    Accept: application/json

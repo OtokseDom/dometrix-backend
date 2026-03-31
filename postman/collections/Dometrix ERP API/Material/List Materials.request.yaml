@@ -1,0 +1,7 @@
+$kind: http-request
+name: List Materials
+method: GET
+url: "{{base_url}}/api/v1/manufacturing/materials"
+order: 1000
+headers:
+    Accept: application/json

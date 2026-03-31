@@ -1,0 +1,7 @@
+$kind: http-request
+name: List BOM Items
+method: GET
+url: "{{base_url}}/api/v1/manufacturing/bom-items"
+order: 1000
+headers:
+    Accept: application/json
