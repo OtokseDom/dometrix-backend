@@ -12,34 +12,34 @@
 
 **Schema Design:**
 
-- [ ] Is `organization_id` enforced on EVERY table via Foreign Key?
-- [ ] Are soft deletes needed? (inventory audit trail)
-- [ ] How are decimal/precision fields handled? (cost per unit, quantities)
-- [ ] Are there composite unique constraints where needed? (e.g., material + organization)
+- [✅] Is `organization_id` enforced on EVERY table via Foreign Key?
+- [✅] Are soft deletes needed? (inventory audit trail)
+- [✅] How are decimal/precision fields handled? (cost per unit, quantities)
+- [✅] Are there composite unique constraints where needed? (e.g., material + organization)
 
 **Tenant Isolation:**
 
 - [ ] Can a user from Org A see data from Org B if they craft a query?
-- [ ] Are row-level policies enforced in queries?
-- [ ] Is organization context required on every model?
+- [✅] Are row-level policies enforced in queries?
+- [✅] Is organization context required on every model?
 
 **Multi-tenancy Specific Risks:**
 
-- [ ] Seeders and migrations - will they work correctly for multiple tenants?
-- [ ] Audit trail - can you trace who changed a BOM in which organization?
+- [✅] Seeders and migrations - will they work correctly for multiple tenants?
+- [] Audit trail - can you trace who changed a BOM in which organization?
 
 **Core Flow Validation:**
 
 - [ ] Material purchase recorded → where? (no purchase table visible)
 - [ ] Stock updated → stock_movements table exists?
-- [ ] BOM → production order → production line items → can they be linked?
+- [✅] BOM → production order → production line items → can they be linked?
 - [ ] Costing calculation → weighted average formula - where lives?
 
 **Data Integrity:**
 
-- [ ] Bill of Materials: circular dependency prevention?
-- [ ] Material prices over time (historical tracking)?
-- [ ] Production: can you handle partial completions, wastage, yield?
+- [] Bill of Materials: circular dependency prevention?
+- [✅] Material prices over time (historical tracking)?
+- [✅] Production: can you handle partial completions, wastage, yield?
 
 ---
 
