@@ -14,7 +14,8 @@ class RoleService
     {
         return Role::create([
             'name' => $dto->name,
-            'permissions' => $dto->permissions
+            'permissions' => $dto->permissions,
+            'organization_id' => $dto->organization_id
         ]);
     }
 

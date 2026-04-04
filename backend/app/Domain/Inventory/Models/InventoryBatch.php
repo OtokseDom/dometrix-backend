@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Domain\Manufacturing\Models\Material;
 use App\Domain\Warehouses\Models\Warehouse;
 use App\Domain\Organization\Models\Organization;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InventoryBatch extends Model
 {
-    use UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes;
 
     public $incrementing = false;
     protected $table = 'inventory_batches';

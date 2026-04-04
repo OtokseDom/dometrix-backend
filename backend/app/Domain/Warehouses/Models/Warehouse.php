@@ -2,14 +2,16 @@
 
 namespace App\Domain\Warehouses\Models;
 
+use App\Domain\Organization\Models\Organization;
 use App\Traits\UsesUuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Warehouse extends Model
 {
-    use UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes;
 
     public $incrementing = false;
     protected $table = 'warehouses';
@@ -17,6 +19,11 @@ class Warehouse extends Model
 
     protected $fillable = ['organization_id', 'code', 'name', 'type', 'location', 'is_active', 'manager_user_id', 'metadata'];
     protected $casts = ['is_active' => 'boolean', 'metadata' => 'array'];
+
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class);
+    }
 
     public function manager(): BelongsTo
     {

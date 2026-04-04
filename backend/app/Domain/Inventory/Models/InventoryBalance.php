@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Domain\Manufacturing\Models\Material;
 use App\Domain\Warehouses\Models\Warehouse;
 use App\Domain\Organization\Models\Organization;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InventoryBalance extends Model
 {
-    use UsesUuid;
+    use HasFactory, UsesUuid;
 
     public $incrementing = false;
     protected $table = 'inventory_balances';
@@ -26,7 +27,6 @@ class InventoryBalance extends Model
         'reserved_qty',
         'available_qty',
         'average_cost',
-        'updated_at',
     ];
 
     protected $casts = [

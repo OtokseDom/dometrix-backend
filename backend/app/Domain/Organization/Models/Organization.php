@@ -4,6 +4,7 @@ namespace App\Domain\Organization\Models;
 
 use App\Domain\User\Models\User;
 use App\Traits\UsesUuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Organization extends Model
 {
-    use UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes;
 
     public $incrementing = false;
     protected $table = 'organizations'; // because we use UUID

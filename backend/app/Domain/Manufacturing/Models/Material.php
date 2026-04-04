@@ -3,6 +3,7 @@
 namespace App\Domain\Manufacturing\Models;
 
 use App\Traits\UsesUuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Material extends Model
 {
-    use UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes;
 
     public $incrementing = false;
     protected $table = 'materials';
@@ -18,6 +19,11 @@ class Material extends Model
 
     protected $fillable = ['organization_id', 'code', 'name', 'category_id', 'unit_id', 'metadata'];
     protected $casts = ['metadata' => 'array'];
+
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(\App\Domain\Organization\Models\Organization::class);
+    }
 
     public function prices(): HasMany
     {

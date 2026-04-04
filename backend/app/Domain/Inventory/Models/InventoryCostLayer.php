@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Domain\Manufacturing\Models\Material;
 use App\Domain\Warehouses\Models\Warehouse;
 use App\Domain\Organization\Models\Organization;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InventoryCostLayer extends Model
 {
-    use UsesUuid;
+    use HasFactory, UsesUuid;
 
     public $incrementing = false;
     protected $table = 'inventory_cost_layers';

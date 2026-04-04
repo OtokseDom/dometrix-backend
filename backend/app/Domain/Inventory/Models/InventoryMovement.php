@@ -11,10 +11,11 @@ use App\Domain\Manufacturing\Models\Material;
 use App\Domain\Warehouses\Models\Warehouse;
 use App\Domain\Organization\Models\Organization;
 use App\Domain\Units\Models\Units;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InventoryMovement extends Model
 {
-    use UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes;
 
     public $incrementing = false;
     protected $table = 'inventory_movements';

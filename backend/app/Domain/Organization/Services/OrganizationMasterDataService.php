@@ -166,22 +166,22 @@ class OrganizationMasterDataService
     {
         $now = Carbon::now();
 
-        // Check if units already exist globally (shared across orgs)
-        $unitCount = DB::table('units')->count();
+        // Check if units already exist for this organization
+        $unitCount = DB::table('units')->where('organization_id', $organizationId)->count();
 
         if ($unitCount == 0) {
             $units = [
                 // Quantity
-                ['id' => Str::uuid(), 'code' => 'pcs', 'name' => 'Piece', 'type' => 'quantity', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
-                ['id' => Str::uuid(), 'code' => 'box', 'name' => 'Box', 'type' => 'quantity', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
-                ['id' => Str::uuid(), 'code' => 'pack', 'name' => 'Pack', 'type' => 'quantity', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
-                ['id' => Str::uuid(), 'code' => 'tray', 'name' => 'Tray', 'type' => 'quantity', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
+                ['id' => Str::uuid(), 'organization_id' => $organizationId, 'code' => 'pcs', 'name' => 'Piece', 'type' => 'quantity', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
+                ['id' => Str::uuid(), 'organization_id' => $organizationId, 'code' => 'box', 'name' => 'Box', 'type' => 'quantity', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
+                ['id' => Str::uuid(), 'organization_id' => $organizationId, 'code' => 'pack', 'name' => 'Pack', 'type' => 'quantity', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
+                ['id' => Str::uuid(), 'organization_id' => $organizationId, 'code' => 'tray', 'name' => 'Tray', 'type' => 'quantity', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
                 // Weight
-                ['id' => Str::uuid(), 'code' => 'kg', 'name' => 'Kilogram', 'type' => 'weight', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
-                ['id' => Str::uuid(), 'code' => 'g', 'name' => 'Gram', 'type' => 'weight', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
+                ['id' => Str::uuid(), 'organization_id' => $organizationId, 'code' => 'kg', 'name' => 'Kilogram', 'type' => 'weight', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
+                ['id' => Str::uuid(), 'organization_id' => $organizationId, 'code' => 'g', 'name' => 'Gram', 'type' => 'weight', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
                 // Volume
-                ['id' => Str::uuid(), 'code' => 'l', 'name' => 'Liter', 'type' => 'volume', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
-                ['id' => Str::uuid(), 'code' => 'ml', 'name' => 'Milliliter', 'type' => 'volume', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
+                ['id' => Str::uuid(), 'organization_id' => $organizationId, 'code' => 'l', 'name' => 'Liter', 'type' => 'volume', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
+                ['id' => Str::uuid(), 'organization_id' => $organizationId, 'code' => 'ml', 'name' => 'Milliliter', 'type' => 'volume', 'metadata' => null, 'created_at' => $now, 'updated_at' => $now, 'deleted_at' => null],
             ];
 
             DB::table('units')->insert($units);

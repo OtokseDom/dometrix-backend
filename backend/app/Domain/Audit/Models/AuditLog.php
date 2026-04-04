@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Domain\Organization\Models\Organization;
 use App\Domain\User\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AuditLog extends Model
 {
-    use UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes;
 
     public $incrementing = false;
     protected $table = 'audit_logs';
