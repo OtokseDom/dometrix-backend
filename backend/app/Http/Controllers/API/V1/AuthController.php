@@ -89,7 +89,7 @@ class AuthController extends Controller
         $user = $this->service->getUserWithOrgs($request->email);
 
         return ApiResponse::send([
-            'token' => $token,
+            'access_token' => $token,
             'user' => new AuthUserResource($user),
         ], "Login successful");
     }
@@ -99,7 +99,7 @@ class AuthController extends Controller
         $user = $request->user();
         $this->service->logout($user);
 
-        return ApiResponse::send(null, "Logged out successfully");
+        return ApiResponse::send(null, "Logout successful");
     }
 
     public function passwordReset(PasswordResetRequest $request)
@@ -112,7 +112,7 @@ class AuthController extends Controller
 
         $success = $this->service->resetPassword($dto);
         if (!$success) {
-            return ApiResponse::send(null, "Invalid token or email", false, 500);
+            return ApiResponse::send(null, "Invalid token or email", false, 400);
         }
 
         return ApiResponse::send(null, "Password reset successful");

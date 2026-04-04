@@ -9,12 +9,11 @@ use App\Http\Requests\StoreOrganizationUserRequest;
 use App\Http\Requests\UpdateOrganizationUserRequest;
 use App\Http\Resources\OrganizationUserResource;
 use App\Helpers\ApiResponse;
+use Illuminate\Support\Facades\Auth;
 
 class OrganizationUserController extends Controller
 {
-    public function __construct(private OrganizationService $service)
-    {
-    }
+    public function __construct(private OrganizationService $service) {}
 
     /**
      * List all users in an organization
@@ -32,8 +31,13 @@ class OrganizationUserController extends Controller
     /**
      * Add a user to an organization
      */
-    public function store(StoreOrganizationUserRequest $request, Organization $organization)
+    public function store(StoreOrganizationUserRequest $request)
     {
+        // Get organization from authenticated user
+        /** @var \App\Domain\User\Models\User $user */
+        $user = Auth::user();
+        $organization = $user->organizations()->first();
+
         $orgUser = $this->service->addUser(
             $organization,
             $request->user_id,
@@ -43,7 +47,9 @@ class OrganizationUserController extends Controller
 
         return ApiResponse::send(
             new OrganizationUserResource($orgUser),
-            'User added to organization successfully', true, 201
+            'User added to organization successfully',
+            true,
+            201
         );
     }
 

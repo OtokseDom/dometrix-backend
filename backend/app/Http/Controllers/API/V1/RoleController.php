@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Resources\RoleResource;
 use App\Http\Resources\RoleCollection;
 use App\Helpers\ApiResponse;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -28,9 +29,15 @@ class RoleController extends Controller
 
     public function store(StoreRoleRequest $request)
     {
+        // Get organization from authenticated user
+        /** @var \App\Domain\User\Models\User $user */
+        $user = Auth::user();
+        $organization = $user->organizations()->first();
+
         $dto = new CreateRoleDTO(
             name: $request->name,
-            permissions: $request->permissions ?? null
+            permissions: $request->permissions ?? null,
+            organization_id: $organization?->id
         );
 
         $role = $this->service->create($dto);
