@@ -17,6 +17,8 @@ use App\Http\Controllers\API\V1\BomItemController;
 use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\TaxController;
 use App\Http\Controllers\API\V1\WarehouseController;
+use App\Http\Controllers\API\V1\InventoryBatchController;
+use App\Http\Controllers\API\V1\InventoryBalanceController;
 
 Route::prefix('v1')->group(function () {
 
@@ -32,12 +34,24 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('organizations', OrganizationController::class);
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
-        Route::apiResource('organization-users', OrganizationUserController::class);
+
+        // Organization-users with custom routing for update/delete with organization and user parameters
+        Route::get('organization-users', [OrganizationUserController::class, 'index']);
+        Route::post('organization-users', [OrganizationUserController::class, 'store']);
+        Route::patch('organization-users/{organization}/{user}', [OrganizationUserController::class, 'update']);
+        Route::delete('organization-users/{organization}/{user}', [OrganizationUserController::class, 'destroy']);
+
         Route::apiResource('units', UnitsController::class);
         Route::apiResource('currencies', CurrenciesController::class);
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('taxes', TaxController::class);
         Route::apiResource('warehouses', WarehouseController::class);
+
+        // INVENTORY ROUTES
+        Route::prefix('inventory')->group(function () {
+            Route::apiResource('batches', InventoryBatchController::class);
+            Route::apiResource('balances', InventoryBalanceController::class, ['only' => ['index', 'show']]);
+        });
 
         // MANUFACTURING CRUD ROUTES
         Route::prefix('manufacturing')->group(function () {
