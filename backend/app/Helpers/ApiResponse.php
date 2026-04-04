@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ApiResponse
 {
@@ -14,8 +15,14 @@ class ApiResponse
         ?array $errors = null
     ) {
         // 🔥 KEY FIX: resolve resource properly
-        if ($data instanceof JsonResource) {
-            $data = $data->response()->getData(true);
+        if ($data instanceof ResourceCollection) {
+            // For collections, extract just the array, don't wrap again
+            $resolved = $data->response()->getData(true);
+            $data = $resolved['data'] ?? [];
+        } elseif ($data instanceof JsonResource) {
+            // For single resources, extract the resource data directly
+            $resolved = $data->response()->getData(true);
+            $data = $resolved['data'] ?? $resolved;
         }
         $response = [
             'success' => $success,

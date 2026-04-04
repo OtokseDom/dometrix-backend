@@ -14,7 +14,7 @@ class StoreOrganizationUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'organization_id' => ['required', 'uuid', 'exists:organizations,id'],
+            // Note: organization_id comes from route parameter, not request body
             'user_id' => ['required', 'uuid', 'exists:users,id'],
             'role_id' => ['nullable', 'uuid', 'exists:roles,id'],
             'status' => ['required', 'string'],

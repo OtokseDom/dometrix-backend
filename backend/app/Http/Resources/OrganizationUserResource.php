@@ -10,6 +10,9 @@ class OrganizationUserResource extends JsonResource
     public function toArray($request): array
     {
         return [
+            'user_id' => $this->user_id,
+            'role_id' => $this->role_id,
+            'organization_id' => $this->organization_id,
             'organization' => $this->whenLoaded('organization', fn() => [
                 'id' => $this->organization->id,
                 'name' => $this->organization->name,
