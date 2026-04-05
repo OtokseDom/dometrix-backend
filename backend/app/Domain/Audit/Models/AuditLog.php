@@ -3,6 +3,7 @@
 namespace App\Domain\Audit\Models;
 
 use App\Traits\UsesUuid;
+use App\Traits\BelongsToOrganization;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AuditLog extends Model
 {
-    use HasFactory, UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes, BelongsToOrganization;
 
     public $incrementing = false;
     protected $table = 'audit_logs';
@@ -57,12 +58,13 @@ class AuditLog extends Model
     }
 
     /**
-     * Scope: Filter by organization and date range
+     * Scope: Filter by date range
+     * 
+     * Organization filtering is now handled by BelongsToOrganization global scope.
+     * This scope only filters by date range.
      */
-    public function scopeOrganizationDateRange($query, string $organizationId, ?\DateTime $fromDate = null, ?\DateTime $toDate = null)
+    public function scopeDateRange($query, ?\DateTime $fromDate = null, ?\DateTime $toDate = null)
     {
-        $query->where('organization_id', $organizationId);
-
         if ($fromDate) {
             $query->whereDate('created_at', '>=', $fromDate);
         }

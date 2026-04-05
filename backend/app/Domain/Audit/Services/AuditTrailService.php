@@ -25,7 +25,6 @@ class AuditTrailService
      * Record an action in the audit trail
      */
     public function recordAction(
-        string $organizationId,
         ?string $userId = null,
         string $module = 'inventory',
         string $entityType = 'InventoryMovement',
@@ -36,7 +35,6 @@ class AuditTrailService
         ?string $remarks = null,
     ): AuditLog {
         return AuditLog::create([
-            'organization_id' => $organizationId,
             'user_id' => $userId,
             'module' => $module,
             'entity_type' => $entityType,
@@ -55,7 +53,6 @@ class AuditTrailService
      */
     public function recordStockMovement(
         string $movementId,
-        string $organizationId,
         string $materialId,
         string $warehouseId,
         float $quantity,
@@ -65,7 +62,6 @@ class AuditTrailService
         ?string $remarks = null
     ): AuditLog {
         return $this->recordAction(
-            organizationId: $organizationId,
             userId: $userId,
             module: 'inventory',
             entityType: 'InventoryMovement',
@@ -86,7 +82,7 @@ class AuditTrailService
      * Record inventory adjustment
      */
     public function recordAdjustment(
-        string $organizationId,
+
         string $materialId,
         string $warehouseId,
         float $quantityBefore,
@@ -95,7 +91,6 @@ class AuditTrailService
         ?string $remarks = null
     ): AuditLog {
         return $this->recordAction(
-            organizationId: $organizationId,
             userId: $userId,
             module: 'inventory',
             entityType: 'InventoryBalance',
@@ -112,14 +107,12 @@ class AuditTrailService
      */
     public function recordBatchEvent(
         string $batchId,
-        string $organizationId,
         string $action, // Created, Updated, Expired, Closed
         ?array $details = null,
         ?string $userId = null,
         ?string $remarks = null
     ): AuditLog {
         return $this->recordAction(
-            organizationId: $organizationId,
             userId: $userId,
             module: 'inventory',
             entityType: 'InventoryBatch',
@@ -133,43 +126,33 @@ class AuditTrailService
     /**
      * Get audit trail for an entity
      */
-    public function getEntityAuditTrail(string $entityType, string $entityId, ?string $organizationId = null): array
+    public function getEntityAuditTrail(string $entityType, string $entityId): array
     {
-        $query = AuditLog::where('entity_type', $entityType)
-            ->where('entity_id', $entityId);
-
-        if ($organizationId) {
-            $query->where('organization_id', $organizationId);
-        }
-
-        return $query->orderBy('created_at', 'desc')
+        return AuditLog::where('entity_type', $entityType)
+            ->where('entity_id', $entityId)
+            ->orderBy('created_at', 'desc')
             ->with(['user', 'organization'])
             ->get()
             ->toArray();
     }
 
     /**
-     * Get audit trail for organization in date range
+     * Get audit trail in date range
      */
     public function getOrganizationAuditTrail(
-        string $organizationId,
         ?string $module = null,
         ?\DateTime $fromDate = null,
         ?\DateTime $toDate = null,
         int $limit = 100
     ): array {
-        $query = AuditLog::where('organization_id', $organizationId);
+        $query = AuditLog::query();
 
         if ($module) {
-            $query->where('module', $module);
+            $query->module($module);
         }
 
-        if ($fromDate) {
-            $query->whereDate('created_at', '>=', $fromDate);
-        }
-
-        if ($toDate) {
-            $query->whereDate('created_at', '<=', $toDate);
+        if ($fromDate || $toDate) {
+            $query->dateRange($fromDate, $toDate);
         }
 
         return $query->orderBy('created_at', 'desc')
@@ -182,9 +165,9 @@ class AuditTrailService
     /**
      * Get summary statistics
      */
-    public function getStatistics(string $organizationId, ?\DateTime $fromDate = null): array
+    public function getStatistics(?\DateTime $fromDate = null): array
     {
-        $query = AuditLog::where('organization_id', $organizationId);
+        $query = AuditLog::query();
 
         if ($fromDate) {
             $query->whereDate('created_at', '>=', $fromDate);
@@ -211,10 +194,9 @@ class AuditTrailService
     /**
      * Get user activity report
      */
-    public function getUserActivityReport(string $organizationId, ?string $userId = null, int $days = 30): array
+    public function getUserActivityReport(?string $userId = null, int $days = 30): array
     {
-        $query = AuditLog::where('organization_id', $organizationId)
-            ->whereDate('created_at', '>=', now()->subDays($days));
+        $query = AuditLog::whereDate('created_at', '>=', now()->subDays($days));
 
         if ($userId) {
             $query->where('user_id', $userId);
