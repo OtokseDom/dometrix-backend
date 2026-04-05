@@ -4,6 +4,7 @@ namespace App\Domain\Warehouses\Models;
 
 use App\Domain\Organization\Models\Organization;
 use App\Traits\UsesUuid;
+use App\Traits\BelongsToOrganization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Warehouse extends Model
 {
-    use HasFactory, UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes, BelongsToOrganization;
 
     public $incrementing = false;
     protected $table = 'warehouses';

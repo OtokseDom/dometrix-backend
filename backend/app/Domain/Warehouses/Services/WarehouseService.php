@@ -8,21 +8,19 @@ use App\Domain\Warehouses\Models\Warehouse;
 
 class WarehouseService
 {
-    public function getWarehouses(string $organizationId)
+    public function getWarehouses()
     {
-        return Warehouse::where('organization_id', $organizationId)->paginate();
+        return Warehouse::paginate();
     }
 
-    public function getWarehouseById(string $organizationId, string $warehouseId): Warehouse
+    public function getWarehouseById(string $warehouseId): Warehouse
     {
-        return Warehouse::where('organization_id', $organizationId)
-            ->findOrFail($warehouseId);
+        return Warehouse::findOrFail($warehouseId);
     }
 
     public function create(CreateWarehouseDTO $dto): Warehouse
     {
         return Warehouse::create([
-            'organization_id' => $dto->organizationId,
             'code' => $dto->code,
             'name' => $dto->name,
             'type' => $dto->type,
