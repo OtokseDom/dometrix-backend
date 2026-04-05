@@ -8,21 +8,19 @@ use App\Domain\Manufacturing\Models\MaterialPrice;
 
 class MaterialPriceService
 {
-    public function getMaterialPrices(string $organizationId)
+    public function getMaterialPrices()
     {
-        return MaterialPrice::where('organization_id', $organizationId)->paginate();
+        return MaterialPrice::paginate();
     }
 
-    public function getMaterialPriceById(string $organizationId, string $materialPriceId): MaterialPrice
+    public function getMaterialPriceById(string $materialPriceId): MaterialPrice
     {
-        return MaterialPrice::where('organization_id', $organizationId)
-            ->findOrFail($materialPriceId);
+        return MaterialPrice::findOrFail($materialPriceId);
     }
 
-    public function getMaterialPricesByMaterial(string $organizationId, string $materialId)
+    public function getMaterialPricesByMaterial(string $materialId)
     {
-        return MaterialPrice::where('organization_id', $organizationId)
-            ->where('material_id', $materialId)
+        return MaterialPrice::where('material_id', $materialId)
             ->orderByDesc('effective_date')
             ->paginate();
     }
@@ -30,7 +28,6 @@ class MaterialPriceService
     public function create(CreateMaterialPriceDTO $dto): MaterialPrice
     {
         return MaterialPrice::create([
-            'organization_id' => $dto->organizationId,
             'material_id' => $dto->materialId,
             'price' => $dto->price,
             'effective_date' => $dto->effectiveDate,

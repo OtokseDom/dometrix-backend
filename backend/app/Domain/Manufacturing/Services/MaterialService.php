@@ -8,21 +8,19 @@ use App\Domain\Manufacturing\Models\Material;
 
 class MaterialService
 {
-    public function getMaterials(string $organizationId)
+    public function getMaterials()
     {
-        return Material::where('organization_id', $organizationId)->paginate();
+        return Material::paginate();
     }
 
-    public function getMaterialById(string $organizationId, string $materialId): Material
+    public function getMaterialById(string $materialId): Material
     {
-        return Material::where('organization_id', $organizationId)
-            ->findOrFail($materialId);
+        return Material::findOrFail($materialId);
     }
 
     public function create(CreateMaterialDTO $dto): Material
     {
         return Material::create([
-            'organization_id' => $dto->organizationId,
             'code' => $dto->code,
             'name' => $dto->name,
             'category_id' => $dto->categoryId,

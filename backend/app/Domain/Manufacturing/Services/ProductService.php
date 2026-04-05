@@ -8,21 +8,19 @@ use App\Domain\Manufacturing\Models\Product;
 
 class ProductService
 {
-    public function getProducts(string $organizationId)
+    public function getProducts()
     {
-        return Product::where('organization_id', $organizationId)->paginate();
+        return Product::paginate();
     }
 
-    public function getProductById(string $organizationId, string $productId): Product
+    public function getProductById(string $productId): Product
     {
-        return Product::where('organization_id', $organizationId)
-            ->findOrFail($productId);
+        return Product::findOrFail($productId);
     }
 
     public function create(CreateProductDTO $dto): Product
     {
         return Product::create([
-            'organization_id' => $dto->organizationId,
             'code' => $dto->code,
             'name' => $dto->name,
             'description' => $dto->description,

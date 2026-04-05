@@ -8,21 +8,19 @@ use App\Domain\Manufacturing\Models\BomItem;
 
 class BomItemService
 {
-    public function getBomItems(string $organizationId)
+    public function getBomItems()
     {
-        return BomItem::where('organization_id', $organizationId)->paginate();
+        return BomItem::paginate();
     }
 
-    public function getBomItemById(string $organizationId, string $bomItemId): BomItem
+    public function getBomItemById(string $bomItemId): BomItem
     {
-        return BomItem::where('organization_id', $organizationId)
-            ->findOrFail($bomItemId);
+        return BomItem::findOrFail($bomItemId);
     }
 
-    public function getBomItemsByBom(string $organizationId, string $bomId)
+    public function getBomItemsByBom(string $bomId)
     {
-        return BomItem::where('organization_id', $organizationId)
-            ->where('bom_id', $bomId)
+        return BomItem::where('bom_id', $bomId)
             ->orderBy('line_no')
             ->paginate();
     }
@@ -30,7 +28,6 @@ class BomItemService
     public function create(CreateBomItemDTO $dto): BomItem
     {
         return BomItem::create([
-            'organization_id' => $dto->organizationId,
             'bom_id' => $dto->bomId,
             'material_id' => $dto->materialId,
             'sub_product_id' => $dto->subProductId,

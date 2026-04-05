@@ -3,6 +3,7 @@
 namespace App\Domain\Manufacturing\Models;
 
 use App\Traits\UsesUuid;
+use App\Traits\BelongsToOrganization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory, UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes, BelongsToOrganization;
 
     public $incrementing = false;
     protected $table = 'products';
