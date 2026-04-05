@@ -24,9 +24,8 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
         return ApiResponse::send(
-            new CategoryCollection($this->service->getCategories($organizationId)),
+            new CategoryCollection($this->service->getCategories()),
             "Categories retrieved"
         );
     }
@@ -50,15 +49,13 @@ class CategoryController extends Controller
 
     public function show(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $category = $this->service->getCategoryById($organizationId, $id);
+        $category = $this->service->getCategoryById($id);
         return ApiResponse::send(new CategoryResource($category), "Category retrieved");
     }
 
     public function update(UpdateCategoryRequest $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $category = $this->service->getCategoryById($organizationId, $id);
+        $category = $this->service->getCategoryById($id);
 
         $dto = new UpdateCategoryDTO(
             code: $request->code ?? null,
@@ -74,8 +71,7 @@ class CategoryController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $category = $this->service->getCategoryById($organizationId, $id);
+        $category = $this->service->getCategoryById($id);
         $this->service->delete($category);
         return ApiResponse::send(null, "Category deleted");
     }

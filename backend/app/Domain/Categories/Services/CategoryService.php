@@ -8,21 +8,19 @@ use App\Domain\Categories\Models\Category;
 
 class CategoryService
 {
-    public function getCategories(string $organizationId)
+    public function getCategories()
     {
-        return Category::where('organization_id', $organizationId)->paginate();
+        return Category::paginate();
     }
 
-    public function getCategoryById(string $organizationId, string $categoryId): Category
+    public function getCategoryById(string $categoryId): Category
     {
-        return Category::where('organization_id', $organizationId)
-            ->findOrFail($categoryId);
+        return Category::findOrFail($categoryId);
     }
 
     public function create(CreateCategoryDTO $dto): Category
     {
         return Category::create([
-            'organization_id' => $dto->organizationId,
             'code' => $dto->code,
             'name' => $dto->name,
             'type' => $dto->type,
