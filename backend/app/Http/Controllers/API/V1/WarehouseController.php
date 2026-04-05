@@ -24,9 +24,8 @@ class WarehouseController extends Controller
 
     public function index(Request $request)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
         return ApiResponse::send(
-            new WarehouseCollection($this->service->getWarehouses($organizationId)),
+            new WarehouseCollection($this->service->getWarehouses()),
             "Warehouses retrieved"
         );
     }
@@ -52,15 +51,13 @@ class WarehouseController extends Controller
 
     public function show(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $warehouse = $this->service->getWarehouseById($organizationId, $id);
+        $warehouse = $this->service->getWarehouseById($id);
         return ApiResponse::send(new WarehouseResource($warehouse), "Warehouse retrieved");
     }
 
     public function update(UpdateWarehouseRequest $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $warehouse = $this->service->getWarehouseById($organizationId, $id);
+        $warehouse = $this->service->getWarehouseById($id);
 
         $dto = new UpdateWarehouseDTO(
             code: $request->code ?? null,
@@ -78,8 +75,7 @@ class WarehouseController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $warehouse = $this->service->getWarehouseById($organizationId, $id);
+        $warehouse = $this->service->getWarehouseById($id);
         $this->service->delete($warehouse);
         return ApiResponse::send(null, "Warehouse deleted");
     }

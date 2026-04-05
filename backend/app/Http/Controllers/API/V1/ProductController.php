@@ -24,9 +24,8 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
         return ApiResponse::send(
-            new ProductCollection($this->service->getProducts($organizationId)),
+            new ProductCollection($this->service->getProducts()),
             "Products retrieved"
         );
     }
@@ -50,15 +49,13 @@ class ProductController extends Controller
 
     public function show(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $product = $this->service->getProductById($organizationId, $id);
+        $product = $this->service->getProductById($id);
         return ApiResponse::send(new ProductResource($product), "Product retrieved");
     }
 
     public function update(UpdateProductRequest $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $product = $this->service->getProductById($organizationId, $id);
+        $product = $this->service->getProductById($id);
 
         $dto = new UpdateProductDTO(
             code: $request->code ?? null,
@@ -74,8 +71,7 @@ class ProductController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $product = $this->service->getProductById($organizationId, $id);
+        $product = $this->service->getProductById($id);
         $this->service->delete($product);
         return ApiResponse::send(null, "Product deleted");
     }

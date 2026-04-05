@@ -15,16 +15,7 @@ class InventoryBalanceController extends Controller
      */
     public function index()
     {
-        /** @var \App\Domain\User\Models\User $user */
-        $user = Auth::user();
-        $organization = $user->organizations()->first();
-
-        if (!$organization) {
-            return ApiResponse::send([], 'No organization found', false, 403);
-        }
-
-        $balances = InventoryBalance::where('organization_id', $organization->id)
-            ->with(['organization', 'warehouse', 'material', 'batch'])
+        $balances = InventoryBalance::with(['organization', 'warehouse', 'material', 'batch'])
             ->paginate(15);
 
         return ApiResponse::send($balances, 'Inventory balances retrieved successfully');
@@ -35,12 +26,7 @@ class InventoryBalanceController extends Controller
      */
     public function show(string $id)
     {
-        /** @var \App\Domain\User\Models\User $user */
-        $user = Auth::user();
-        $organization = $user->organizations()->first();
-
         $balance = InventoryBalance::where('id', $id)
-            ->where('organization_id', $organization->id)
             ->with(['organization', 'warehouse', 'material', 'batch'])
             ->firstOrFail();
 

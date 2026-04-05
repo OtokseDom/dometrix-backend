@@ -24,9 +24,8 @@ class BomController extends Controller
 
     public function index(Request $request)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
         return ApiResponse::send(
-            new BomCollection($this->service->getBoms($organizationId)),
+            new BomCollection($this->service->getBoms()),
             "BOMs retrieved"
         );
     }
@@ -49,15 +48,13 @@ class BomController extends Controller
 
     public function show(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $bom = $this->service->getBomById($organizationId, $id);
+        $bom = $this->service->getBomById($id);
         return ApiResponse::send(new BomResource($bom), "BOM retrieved");
     }
 
     public function update(UpdateBomRequest $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $bom = $this->service->getBomById($organizationId, $id);
+        $bom = $this->service->getBomById($id);
 
         $dto = new UpdateBomDTO(
             version: $request->version ?? null,
@@ -71,8 +68,7 @@ class BomController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $bom = $this->service->getBomById($organizationId, $id);
+        $bom = $this->service->getBomById($id);
         $this->service->delete($bom);
         return ApiResponse::send(null, "BOM deleted");
     }

@@ -24,9 +24,8 @@ class MaterialController extends Controller
 
     public function index(Request $request)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
         return ApiResponse::send(
-            new MaterialCollection($this->service->getMaterials($organizationId)),
+            new MaterialCollection($this->service->getMaterials()),
             "Materials retrieved"
         );
     }
@@ -50,15 +49,13 @@ class MaterialController extends Controller
 
     public function show(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $material = $this->service->getMaterialById($organizationId, $id);
+        $material = $this->service->getMaterialById($id);
         return ApiResponse::send(new MaterialResource($material), "Material retrieved");
     }
 
     public function update(UpdateMaterialRequest $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $material = $this->service->getMaterialById($organizationId, $id);
+        $material = $this->service->getMaterialById($id);
 
         $dto = new UpdateMaterialDTO(
             code: $request->code ?? null,
@@ -74,8 +71,7 @@ class MaterialController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $material = $this->service->getMaterialById($organizationId, $id);
+        $material = $this->service->getMaterialById($id);
         $this->service->delete($material);
         return ApiResponse::send(null, "Material deleted");
     }

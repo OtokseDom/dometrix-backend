@@ -24,9 +24,8 @@ class MaterialPriceController extends Controller
 
     public function index(Request $request)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
         return ApiResponse::send(
-            new MaterialPriceCollection($this->service->getMaterialPrices($organizationId)),
+            new MaterialPriceCollection($this->service->getMaterialPrices()),
             "Material prices retrieved"
         );
     }
@@ -49,15 +48,13 @@ class MaterialPriceController extends Controller
 
     public function show(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $materialPrice = $this->service->getMaterialPriceById($organizationId, $id);
+        $materialPrice = $this->service->getMaterialPriceById($id);
         return ApiResponse::send(new MaterialPriceResource($materialPrice), "Material price retrieved");
     }
 
     public function update(UpdateMaterialPriceRequest $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $materialPrice = $this->service->getMaterialPriceById($organizationId, $id);
+        $materialPrice = $this->service->getMaterialPriceById($id);
 
         $dto = new UpdateMaterialPriceDTO(
             price: $request->price ?? null,
@@ -70,8 +67,7 @@ class MaterialPriceController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $materialPrice = $this->service->getMaterialPriceById($organizationId, $id);
+        $materialPrice = $this->service->getMaterialPriceById($id);
         $this->service->delete($materialPrice);
         return ApiResponse::send(null, "Material price deleted");
     }
