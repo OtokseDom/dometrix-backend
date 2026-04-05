@@ -19,10 +19,9 @@ class InventoryReportingService
     /**
      * Get stock level report for organization
      */
-    public function getStockLevelReport(string $organizationId, ?string $warehouseId = null): array
+    public function getStockLevelReport(?string $warehouseId = null): array
     {
-        $query = InventoryBalance::where('organization_id', $organizationId)
-            ->where('on_hand_qty', '>', 0)
+        $query = InventoryBalance::where('on_hand_qty', '>', 0)
             ->with(['warehouse', 'material']);
 
         if ($warehouseId) {
@@ -51,13 +50,11 @@ class InventoryReportingService
      * Get movement history for a material
      */
     public function getMaterialMovementHistory(
-        string $organizationId,
         string $materialId,
         ?\DateTime $fromDate = null,
         ?\DateTime $toDate = null
     ): array {
-        $query = InventoryMovement::where('organization_id', $organizationId)
-            ->where('material_id', $materialId);
+        $query = InventoryMovement::where('material_id', $materialId);
 
         if ($fromDate) {
             $query->whereDate('created_at', '>=', $fromDate);
@@ -92,12 +89,10 @@ class InventoryReportingService
      * Get COGS analysis by period
      */
     public function getCogsAnalysis(
-        string $organizationId,
         ?\DateTime $fromDate = null,
         ?\DateTime $toDate = null
     ): array {
-        $query = InventoryMovement::where('organization_id', $organizationId)
-            ->where('direction', 'OUT');
+        $query = InventoryMovement::where('direction', 'OUT');
 
         if ($fromDate) {
             $query->whereDate('created_at', '>=', $fromDate);
@@ -160,7 +155,6 @@ class InventoryReportingService
      * Get slow/fast moving materials
      */
     public function getMovingMaterialsAnalysis(
-        string $organizationId,
         int $daysToAnalyze = 90,
         int $minTurnovers = 12
     ): array {
@@ -168,7 +162,6 @@ class InventoryReportingService
 
         $results = DB::table('inventory_movements as im')
             ->join('materials as m', 'im.material_id', '=', 'm.id')
-            ->where('im.organization_id', $organizationId)
             ->where('im.direction', 'IN')
             ->whereDate('im.created_at', '>=', $fromDate)
             ->selectRaw('
@@ -202,9 +195,9 @@ class InventoryReportingService
     /**
      * Get batch aging report
      */
-    public function getBatchAgingReport(string $organizationId, ?string $warehouseId = null): array
+    public function getBatchAgingReport(?string $warehouseId = null): array
     {
-        $query = InventoryBatch::where('organization_id', $organizationId)
+        $query = InventoryBatch::where('created_at', '!=', null)
             ->where('remaining_qty', '>', 0)
             ->active()
             ->with('material', 'warehouse');
@@ -247,9 +240,8 @@ class InventoryReportingService
             ->with('material', 'warehouse')
             ->get();
 
-        return $balances->map(function ($balance) use ($organizationId) {
-            $movements = InventoryMovement::where('organization_id', $organizationId)
-                ->where('warehouse_id', $balance->warehouse_id)
+        return $balances->map(function ($balance) {
+            $movements = InventoryMovement::where('warehouse_id', $balance->warehouse_id)
                 ->where('material_id', $balance->material_id)
                 ->sum('quantity');
 
@@ -268,10 +260,9 @@ class InventoryReportingService
     /**
      * Get warehouse health snapshot
      */
-    public function getWarehouseHealth(string $organizationId): array
+    public function getWarehouseHealth(): array
     {
         return DB::table('inventory_balances')
-            ->where('organization_id', $organizationId)
             ->join('warehouses', 'inventory_balances.warehouse_id', '=', 'warehouses.id')
             ->selectRaw('
                 warehouses.id,

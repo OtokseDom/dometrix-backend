@@ -23,10 +23,9 @@ class InventoryBalanceService
     /**
      * Get or create balance record
      */
-    public function getBalance(string $organizationId, string $warehouseId, string $materialId, ?string $batchId = null): ?InventoryBalance
+    public function getBalance(string $warehouseId, string $materialId, ?string $batchId = null): ?InventoryBalance
     {
-        return InventoryBalance::where('organization_id', $organizationId)
-            ->where('warehouse_id', $warehouseId)
+        return InventoryBalance::where('warehouse_id', $warehouseId)
             ->where('material_id', $materialId)
             ->where('batch_id', $batchId)
             ->first();
@@ -36,7 +35,6 @@ class InventoryBalanceService
      * Update or create balance snapshot
      */
     public function updateBalance(
-        string $organizationId,
         string $warehouseId,
         string $materialId,
         ?string $batchId = null,
@@ -46,7 +44,6 @@ class InventoryBalanceService
     ): InventoryBalance {
         $balance = InventoryBalance::firstOrCreate(
             [
-                'organization_id' => $organizationId,
                 'warehouse_id' => $warehouseId,
                 'material_id' => $materialId,
                 'batch_id' => $batchId,
@@ -67,7 +64,7 @@ class InventoryBalanceService
             // Calculate average cost if we have incoming movements
             $avgCost = $unitCost;
             if (!$avgCost && $onHandQty > 0) {
-                $avgCost = $this->calculateAverageCost($organizationId, $warehouseId, $materialId, $batchId);
+                $avgCost = $this->calculateAverageCost($warehouseId, $materialId, $batchId);
             }
 
             $balance->update([
@@ -85,9 +82,9 @@ class InventoryBalanceService
     /**
      * Reserve inventory for an order/production
      */
-    public function reserve(string $organizationId, string $warehouseId, string $materialId, float $quantity, ?string $batchId = null): void
+    public function reserve(string $warehouseId, string $materialId, float $quantity, ?string $batchId = null): void
     {
-        $balance = $this->getBalance($organizationId, $warehouseId, $materialId, $batchId);
+        $balance = $this->getBalance($warehouseId, $materialId, $batchId);
 
         if (!$balance) {
             throw new \Exception("No stock to reserve for material: {$materialId}");
@@ -107,9 +104,9 @@ class InventoryBalanceService
     /**
      * Release reserved inventory
      */
-    public function releaseReserve(string $organizationId, string $warehouseId, string $materialId, float $quantity, ?string $batchId = null): void
+    public function releaseReserve(string $warehouseId, string $materialId, float $quantity, ?string $batchId = null): void
     {
-        $balance = $this->getBalance($organizationId, $warehouseId, $materialId, $batchId);
+        $balance = $this->getBalance($warehouseId, $materialId, $batchId);
 
         if (!$balance) {
             return; // Nothing to release
@@ -125,10 +122,9 @@ class InventoryBalanceService
     /**
      * Get all balances for a warehouse
      */
-    public function getWarehouseBalance(string $organizationId, string $warehouseId, bool $onlyWithStock = true): array
+    public function getWarehouseBalance(string $warehouseId, bool $onlyWithStock = true): array
     {
-        $query = InventoryBalance::where('organization_id', $organizationId)
-            ->where('warehouse_id', $warehouseId);
+        $query = InventoryBalance::where('warehouse_id', $warehouseId);
 
         if ($onlyWithStock) {
             $query->where('on_hand_qty', '>', 0);
@@ -140,10 +136,9 @@ class InventoryBalanceService
     /**
      * Calculate FIFO average cost for a material
      */
-    private function calculateAverageCost(string $organizationId, string $warehouseId, string $materialId, ?string $batchId): ?float
+    private function calculateAverageCost(string $warehouseId, string $materialId, ?string $batchId): ?float
     {
         $totalValue = DB::table('inventory_cost_layers')
-            ->where('organization_id', $organizationId)
             ->where('warehouse_id', $warehouseId)
             ->where('material_id', $materialId)
             ->when($batchId, fn($q) => $q->where('batch_id', $batchId))
@@ -153,7 +148,6 @@ class InventoryBalanceService
             ?->total_value;
 
         $totalQty = DB::table('inventory_cost_layers')
-            ->where('organization_id', $organizationId)
             ->where('warehouse_id', $warehouseId)
             ->where('material_id', $materialId)
             ->when($batchId, fn($q) => $q->where('batch_id', $batchId))
@@ -170,10 +164,9 @@ class InventoryBalanceService
     /**
      * Get total stock value for organization
      */
-    public function getOrganizationInventoryValue(string $organizationId): float
+    public function getOrganizationInventoryValue(): float
     {
         return (float) DB::table('inventory_balances')
-            ->where('organization_id', $organizationId)
             ->selectRaw('SUM(on_hand_qty * average_cost) as total_value')
             ->first()
             ?->total_value ?? 0;

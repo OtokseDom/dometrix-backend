@@ -3,6 +3,7 @@
 namespace App\Domain\Inventory\Models;
 
 use App\Traits\UsesUuid;
+use App\Traits\BelongsToOrganization;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InventoryBatch extends Model
 {
-    use HasFactory, UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes, BelongsToOrganization;
 
     public $incrementing = false;
     protected $table = 'inventory_batches';
@@ -92,11 +93,6 @@ class InventoryBatch extends Model
     public function scopeWithStock($query)
     {
         return $query->where('remaining_qty', '>', 0);
-    }
-
-    public function scopeOrganization($query, string $organizationId)
-    {
-        return $query->where('organization_id', $organizationId);
     }
 
     // Methods

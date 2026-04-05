@@ -43,7 +43,6 @@ class InventoryCostLayerService
      * Consume quantity from cost layers using FIFO
      */
     public function consumeFifo(
-        string $organizationId,
         string $warehouseId,
         string $materialId,
         float $quantityToConsume,
@@ -53,7 +52,7 @@ class InventoryCostLayerService
         $remainingQty = $quantityToConsume;
 
         // Get available layers in FIFO order
-        $layers = $this->getAvailableLayers($organizationId, $warehouseId, $materialId, $batchId);
+        $layers = $this->getAvailableLayers($warehouseId, $materialId, $batchId);
 
         foreach ($layers as $layer) {
             if ($remainingQty <= 0) {
@@ -89,25 +88,23 @@ class InventoryCostLayerService
      * Calculate COGS for a material using specified method
      */
     public function calculateCogs(
-        string $organizationId,
         string $warehouseId,
         string $materialId,
         float $quantityConsumed,
         CostingMethod $method = CostingMethod::FIFO
     ): float {
         return match ($method) {
-            CostingMethod::FIFO => $this->calculateFifoCogs($organizationId, $warehouseId, $materialId),
-            CostingMethod::WEIGHTED_AVERAGE => $this->calculateWeightedAverageCogs($organizationId, $warehouseId, $materialId),
+            CostingMethod::FIFO => $this->calculateFifoCogs($warehouseId, $materialId),
+            CostingMethod::WEIGHTED_AVERAGE => $this->calculateWeightedAverageCogs($warehouseId, $materialId),
         };
     }
 
     /**
      * Get cost layers for a material
      */
-    public function getCostLayers(string $organizationId, string $warehouseId, string $materialId, ?string $batchId = null): array
+    public function getCostLayers(string $warehouseId, string $materialId, ?string $batchId = null): array
     {
-        return InventoryCostLayer::where('organization_id', $organizationId)
-            ->where('warehouse_id', $warehouseId)
+        return InventoryCostLayer::where('warehouse_id', $warehouseId)
             ->where('material_id', $materialId)
             ->when($batchId, fn($q) => $q->where('batch_id', $batchId))
             ->fifoOrder()
@@ -118,10 +115,9 @@ class InventoryCostLayerService
     /**
      * Get available cost layers (with remaining qty > 0)
      */
-    public function getAvailableLayers(string $organizationId, string $warehouseId, string $materialId, ?string $batchId = null): array
+    public function getAvailableLayers(string $warehouseId, string $materialId, ?string $batchId = null): array
     {
-        return InventoryCostLayer::where('organization_id', $organizationId)
-            ->where('warehouse_id', $warehouseId)
+        return InventoryCostLayer::where('warehouse_id', $warehouseId)
             ->where('material_id', $materialId)
             ->when($batchId, fn($q) => $q->where('batch_id', $batchId))
             ->withRemaining()
@@ -133,10 +129,9 @@ class InventoryCostLayerService
     /**
      * Calculate COGS using FIFO method from consumed layers
      */
-    private function calculateFifoCogs(string $organizationId, string $warehouseId, string $materialId): float
+    private function calculateFifoCogs(string $warehouseId, string $materialId): float
     {
-        $layers = InventoryCostLayer::where('organization_id', $organizationId)
-            ->where('warehouse_id', $warehouseId)
+        $layers = InventoryCostLayer::where('warehouse_id', $warehouseId)
             ->where('material_id', $materialId)
             ->get();
 
@@ -148,10 +143,9 @@ class InventoryCostLayerService
     /**
      * Calculate COGS using weighted average cost
      */
-    private function calculateWeightedAverageCogs(string $organizationId, string $warehouseId, string $materialId): float
+    private function calculateWeightedAverageCogs(string $warehouseId, string $materialId): float
     {
         $totalCost = DB::table('inventory_movements')
-            ->where('organization_id', $organizationId)
             ->where('warehouse_id', $warehouseId)
             ->where('material_id', $materialId)
             ->where('direction', 'OUT')
@@ -163,10 +157,9 @@ class InventoryCostLayerService
     /**
      * Get total COGS for a warehouse
      */
-    public function getWarehouseCogs(string $organizationId, string $warehouseId): float
+    public function getWarehouseCogs(string $warehouseId): float
     {
         return (float) DB::table('inventory_cost_layers')
-            ->where('organization_id', $organizationId)
             ->where('warehouse_id', $warehouseId)
             ->selectRaw('SUM(original_qty - remaining_qty) * unit_cost as cogs')
             ->first()
@@ -176,10 +169,9 @@ class InventoryCostLayerService
     /**
      * Cleanup closed layers (optional maintenance task)
      */
-    public function cleanupClosedLayers(string $organizationId, int $daysOld = 90): int
+    public function cleanupClosedLayers(int $daysOld = 90): int
     {
-        return InventoryCostLayer::where('organization_id', $organizationId)
-            ->where('remaining_qty', 0)
+        return InventoryCostLayer::where('remaining_qty', 0)
             ->whereDate('created_at', '<', now()->subDays($daysOld))
             ->delete();
     }

@@ -3,6 +3,7 @@
 namespace App\Domain\Inventory\Models;
 
 use App\Traits\UsesUuid;
+use App\Traits\BelongsToOrganization;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Domain\Manufacturing\Models\Material;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InventoryBalance extends Model
 {
-    use HasFactory, UsesUuid;
+    use HasFactory, UsesUuid, BelongsToOrganization;
 
     public $incrementing = false;
     protected $table = 'inventory_balances';
@@ -60,11 +61,6 @@ class InventoryBalance extends Model
     }
 
     // Scopes
-    public function scopeOrganization($query, string $organizationId)
-    {
-        return $query->where('organization_id', $organizationId);
-    }
-
     public function scopeWarehouse($query, string $warehouseId)
     {
         return $query->where('warehouse_id', $warehouseId);

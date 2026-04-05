@@ -48,7 +48,6 @@ class InventoryMovementService
 
             // Get current balance before movement
             $currentBalance = $this->balanceService->getBalance(
-                $dto->organizationId,
                 $dto->warehouseId,
                 $dto->materialId,
                 $dto->batchId
@@ -98,7 +97,6 @@ class InventoryMovementService
 
             // Update balance snapshot
             $this->balanceService->updateBalance(
-                $dto->organizationId,
                 $dto->warehouseId,
                 $dto->materialId,
                 $dto->batchId,
@@ -109,7 +107,6 @@ class InventoryMovementService
 
             // Record audit trail
             $this->auditService->recordAction(
-                organizationId: $dto->organizationId,
                 userId: $dto->performedBy,
                 module: 'inventory',
                 entityType: 'InventoryMovement',
@@ -126,9 +123,9 @@ class InventoryMovementService
     /**
      * Get current stock balance for a material
      */
-    public function getBalance(string $organizationId, string $warehouseId, string $materialId, ?string $batchId = null): ?InventoryBalance
+    public function getBalance(string $warehouseId, string $materialId, ?string $batchId = null): ?InventoryBalance
     {
-        return $this->balanceService->getBalance($organizationId, $warehouseId, $materialId, $batchId);
+        return $this->balanceService->getBalance($warehouseId, $materialId, $batchId);
     }
 
     /**
@@ -145,10 +142,10 @@ class InventoryMovementService
     /**
      * Get detailed balance including all cost layers
      */
-    public function getDetailedBalance(string $organizationId, string $warehouseId, string $materialId): array
+    public function getDetailedBalance(string $warehouseId, string $materialId): array
     {
-        $balance = $this->balanceService->getBalance($organizationId, $warehouseId, $materialId);
-        $costLayers = $this->costLayerService->getCostLayers($organizationId, $warehouseId, $materialId);
+        $balance = $this->balanceService->getBalance($warehouseId, $materialId);
+        $costLayers = $this->costLayerService->getCostLayers($warehouseId, $materialId);
 
         return [
             'balance' => $balance,
