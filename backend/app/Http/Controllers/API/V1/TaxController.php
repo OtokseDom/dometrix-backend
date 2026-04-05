@@ -24,9 +24,8 @@ class TaxController extends Controller
 
     public function index(Request $request)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
         return ApiResponse::send(
-            new TaxCollection($this->service->getTaxes($organizationId)),
+            new TaxCollection($this->service->getTaxes()),
             "Taxes retrieved"
         );
     }
@@ -50,15 +49,13 @@ class TaxController extends Controller
 
     public function show(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $tax = $this->service->getTaxById($organizationId, $id);
+        $tax = $this->service->getTaxById($id);
         return ApiResponse::send(new TaxResource($tax), "Tax retrieved");
     }
 
     public function update(UpdateTaxRequest $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $tax = $this->service->getTaxById($organizationId, $id);
+        $tax = $this->service->getTaxById($id);
 
         $dto = new UpdateTaxDTO(
             code: $request->code ?? null,
@@ -74,8 +71,7 @@ class TaxController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $organizationId = $request->user()->organizations()->first()->id;
-        $tax = $this->service->getTaxById($organizationId, $id);
+        $tax = $this->service->getTaxById($id);
         $this->service->delete($tax);
         return ApiResponse::send(null, "Tax deleted");
     }

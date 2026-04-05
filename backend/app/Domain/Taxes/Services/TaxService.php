@@ -8,20 +8,19 @@ use App\Domain\Taxes\Models\Tax;
 
 class TaxService
 {
-    public function getTaxes(string $organizationId)
+    public function getTaxes()
     {
-        return Tax::where('organization_id', $organizationId)->paginate();
+        return Tax::paginate();
     }
 
-    public function getTaxById(string $organizationId, string $taxId): Tax
+    public function getTaxById(string $taxId): Tax
     {
-        return Tax::where('organization_id', $organizationId)->findOrFail($taxId);
+        return Tax::findOrFail($taxId);
     }
 
     public function create(CreateTaxDTO $dto): Tax
     {
         return Tax::create([
-            'organization_id' => $dto->organizationId,
             'code' => $dto->code,
             'name' => $dto->name,
             'rate' => $dto->rate,

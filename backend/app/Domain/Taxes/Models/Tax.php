@@ -3,13 +3,14 @@
 namespace App\Domain\Taxes\Models;
 
 use App\Traits\UsesUuid;
+use App\Traits\BelongsToOrganization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tax extends Model
 {
-    use HasFactory, UsesUuid, SoftDeletes;
+    use HasFactory, UsesUuid, SoftDeletes, BelongsToOrganization;
 
     public $incrementing = false;
     protected $table = 'taxes';
